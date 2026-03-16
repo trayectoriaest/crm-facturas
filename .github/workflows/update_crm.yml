@@ -1,0 +1,41 @@
+name: Actualizar CRM Facturación EST
+
+on:
+  schedule:
+    - cron: '0 11 * * 1-5'   # 8:00 AM Chile (UTC-3)
+  workflow_dispatch:           # ejecución manual
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install openpyxl requests
+
+      - name: Generar CRM
+        env:
+          TENANT_ID:     ${{ secrets.TENANT_ID }}
+          CLIENT_ID:     ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: python build_crm.py
+
+      - name: Commit y push
+        run: |
+          git config user.name "CRM Bot"
+          git config user.email "bot@trayectoriaest.cl"
+          git add index.html
+          git diff --staged --quiet || git commit -m "CRM actualizado $(date +'%d/%m/%Y %H:%M') [auto]"
+          git push
