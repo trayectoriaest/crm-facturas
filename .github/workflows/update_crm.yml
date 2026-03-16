@@ -2,8 +2,8 @@ name: Actualizar CRM Facturación EST
 
 on:
   schedule:
-    - cron: '0 11 * * 1-5'   # 8:00 AM Chile (UTC-3)
-  workflow_dispatch:           # ejecución manual
+    - cron: '0 11 * * 1-5'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -22,8 +22,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Instalar dependencias
+      - name: Instalar dependencias Python
         run: pip install openpyxl requests
+
+      - name: Instalar Babel para compilar JSX
+        run: |
+          mkdir -p /tmp/babel
+          npm install --prefix /tmp/babel @babel/core @babel/preset-react
 
       - name: Generar CRM
         env:
