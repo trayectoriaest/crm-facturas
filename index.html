@@ -77,9 +77,9 @@
     .progress-fill{{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue-lt),var(--blue));transition:width .4s}}
     .two-col{{display:grid;grid-template-columns:1fr 1fr;gap:20px}}
     .overlay{{position:fixed;inset:0;background:rgba(20,30,70,.45);display:flex;align-items:center;justify-content:center;z-index:200;animation:fadeIn .15s ease;backdrop-filter:blur(2px)}}
-    @keyframes fadeIn{{from{{opacity:0}}to{{opacity:1}}}}
+    @keyframes fadeIn{{from{{opacity:0}}to{{opacity:1}}
     .modal{{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px;width:520px;max-height:92vh;overflow-y:auto;animation:slideUp .2s ease;box-shadow:var(--shadow-md)}}
-    @keyframes slideUp{{from{{transform:translateY(16px);opacity:0}}to{{transform:translateY(0);opacity:1}}}}
+    @keyframes slideUp{{from{{transform:translateY(16px);opacity:0}}to{{transform:translateY(0);opacity:1}}
     .modal-title{{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:16px}}
     .modal-actions{{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:14px;border-top:1px solid var(--border-lt)}}
     .kv-grid{{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}}
@@ -145,9 +145,9 @@ function AtrasoChip({{fecha, estado}}) {{
   const e = estadoNorm(estado);
   if (e === 'pagada' || e === 'pagado' || e === 'anulada') return null;
   const d = diasAtraso(fecha);
-  if (d <= 0) return <span className="atraso-chip" style={{{{background:'#edfaf4',color:'#1a9e6a'}}}}>Vigente</span>;
-  if (d <= 30) return <span className="atraso-chip" style={{{{background:'#fff7ed',color:'#d97b10'}}}}>{{d}}d atraso</span>;
-  return <span className="atraso-chip" style={{{{background:'#fff0f0',color:'#d93b3b'}}}}>{{d}}d atraso</span>;
+  if (d <= 0) return <span className="atraso-chip" style={{background:'#edfaf4',color:'#1a9e6a'}}>Vigente</span>;
+  if (d <= 30) return <span className="atraso-chip" style={{background:'#fff7ed',color:'#d97b10'}}>{{d}}d atraso</span>;
+  return <span className="atraso-chip" style={{background:'#fff0f0',color:'#d93b3b'}}>{{d}}d atraso</span>;
 }}
 
 /* ── LOGO ── */
@@ -178,10 +178,10 @@ function ModalPago({{factura, onClose, onConfirm, saving}}) {{
         <div className="kv-grid">
           <div className="kv"><span className="kv-key">Cliente</span><span className="kv-val">{{factura.razon}}</span></div>
           <div className="kv"><span className="kv-key">N° Factura</span><span className="kv-val">{{factura.nFactura}}</span></div>
-          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{{{color:'var(--success)'}}}}>{{{fmtFull(factura.total)}}}</span></div>
+          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{color:'var(--success)'}}>{{{fmtFull(factura.total)}}}</span></div>
           <div className="kv"><span className="kv-key">Fecha Factura</span><span className="kv-val">{{fmtDate(factura.fecha)}}</span></div>
         </div>
-        <p style={{{{fontSize:'.84rem',color:'var(--text-2)',lineHeight:1.6}}}}>
+        <p style={{fontSize:'.84rem',color:'var(--text-2)',lineHeight:1.6}}>
           Al confirmar, se actualizará el estado a <strong>Pagada</strong> directamente en el Excel de SharePoint (<strong>Facturación EST {{factura.year}}.xlsx</strong>, fila {{factura.row}}).
         </p>
         <div className="modal-actions">
@@ -249,7 +249,7 @@ function Dashboard({{facturas, setView}}) {{
           <div key={{c.label}} className="stat-card">
             <div className="stat-card-top">
               <div className="stat-label">{{c.label}}</div>
-              <div className="stat-icon" style={{{{background:c.bg}}}}>{{c.icon}}</div>
+              <div className="stat-icon" style={{background:c.bg}}>{{c.icon}}</div>
             </div>
             <div className="stat-val">{{c.val}}</div>
             <div className="stat-sub">{{c.sub}}</div>
@@ -265,10 +265,10 @@ function Dashboard({{facturas, setView}}) {{
             <thead><tr><th>#</th><th>Cliente</th><th>Pendiente</th><th>Facturas</th></tr></thead>
             <tbody>{{top5.map((c,i) => (
               <tr key={{c.razon}}>
-                <td style={{{{fontWeight:700,color:'var(--muted)'}}}}>#{{i+1}}</td>
-                <td><div style={{{{fontWeight:600,color:'var(--navy)'}}}}> {{c.razon}}</div><div style={{{{fontSize:'.74rem',color:'var(--muted)'}}}}> {{c.rut}}</div></td>
-                <td style={{{{fontWeight:700,color:'var(--danger)'}}}}> {{fmtM(c.pendiente)}}</td>
-                <td><span style={{{{fontWeight:700,color:'var(--warn)'}}}}> {{c.nImpagas}}</span> impaga(s)</td>
+                <td style={{fontWeight:700,color:'var(--muted)'}}>#{{i+1}}</td>
+                <td><div style={{fontWeight:600,color:'var(--navy)'}}> {{c.razon}}</div><div style={{fontSize:'.74rem',color:'var(--muted)'}}> {{c.rut}}</div></td>
+                <td style={{fontWeight:700,color:'var(--danger)'}}> {{fmtM(c.pendiente)}}</td>
+                <td><span style={{fontWeight:700,color:'var(--warn)'}}> {{c.nImpagas}}</span> impaga(s)</td>
               </tr>
             ))}}</tbody>
           </table>
@@ -283,13 +283,13 @@ function Dashboard({{facturas, setView}}) {{
             <tbody>
               {{vencidas.slice(0,6).map(f => (
                 <tr key={{f.nFactura+f.row}}>
-                  <td style={{{{fontWeight:700}}}}> {{f.nFactura}}</td>
-                  <td style={{{{fontSize:'.8rem'}}}}>{{f.razon}}</td>
-                  <td style={{{{fontWeight:700,color:'var(--danger)'}}}}> {{fmtM(f.total)}}</td>
+                  <td style={{fontWeight:700}}> {{f.nFactura}}</td>
+                  <td style={{fontSize:'.8rem'}}>{{f.razon}}</td>
+                  <td style={{fontWeight:700,color:'var(--danger)'}}> {{fmtM(f.total)}}</td>
                   <td><AtrasoChip fecha={{f.fecha}} estado={{f.estado}}/></td>
                 </tr>
               ))}}
-              {{vencidas.length===0 && <tr><td colSpan="4"><div className="empty-state" style={{{{padding:20}}}}>Sin facturas vencidas 🎉</div></td></tr>}}
+              {{vencidas.length===0 && <tr><td colSpan="4"><div className="empty-state" style={{padding:20}}>Sin facturas vencidas 🎉</div></td></tr>}}
             </tbody>
           </table>
         </div>
@@ -368,17 +368,17 @@ function FacturasView({{facturas, onPagar}}) {{
               const esImpaga = !['pagada','pagado','anulada'].includes(estadoNorm(f.estado));
               const vencida  = esImpaga && diasAtraso(f.fecha) > (parseInt(f.plazo)||30);
               return (
-                <tr key={{f.nFactura+'-'+f.row+'-'+f.year}} style={{{{background: vencida?'#fff8f8':esImpaga?'#fffdf5':''}}}}>
-                  <td style={{{{fontWeight:700,color:'var(--navy)'}}}}> {{f.nFactura}}</td>
-                  <td><div style={{{{fontWeight:600,fontSize:'.82rem'}}}}> {{f.razon}}</div></td>
-                  <td style={{{{color:'var(--muted)',fontSize:'.78rem'}}}}> {{f.rut}}</td>
-                  <td style={{{{fontSize:'.78rem',color:'var(--text-2)'}}}}> {{fmtDate(f.fecha)}}</td>
-                  <td style={{{{fontSize:'.82rem'}}}}> {{fmtFull(f.neto)}}</td>
-                  <td style={{{{fontWeight:700,color:vencida?'var(--danger)':esImpaga?'var(--warn)':'var(--success)'}}}}> {{fmtFull(f.total)}}</td>
+                <tr key={{f.nFactura+'-'+f.row+'-'+f.year}} style={{background: vencida?'#fff8f8':esImpaga?'#fffdf5':''}}>
+                  <td style={{fontWeight:700,color:'var(--navy)'}}> {{f.nFactura}}</td>
+                  <td><div style={{fontWeight:600,fontSize:'.82rem'}}> {{f.razon}}</div></td>
+                  <td style={{color:'var(--muted)',fontSize:'.78rem'}}> {{f.rut}}</td>
+                  <td style={{fontSize:'.78rem',color:'var(--text-2)'}}> {{fmtDate(f.fecha)}}</td>
+                  <td style={{fontSize:'.82rem'}}> {{fmtFull(f.neto)}}</td>
+                  <td style={{fontWeight:700,color:vencida?'var(--danger)':esImpaga?'var(--warn)':'var(--success)'}}> {{fmtFull(f.total)}}</td>
                   <td><EstadoBadge estado={{f.estado}}/></td>
-                  <td style={{{{fontSize:'.78rem',color:'var(--muted)'}}}}> {{f.plazo ? f.plazo+' días' : '—'}}</td>
-                  <td style={{{{fontSize:'.78rem'}}}}> {{fmtDate(f.fechaPago)}}</td>
-                  <td style={{{{fontSize:'.76rem',color:'var(--muted)'}}}}> {{f.oc||'—'}}</td>
+                  <td style={{fontSize:'.78rem',color:'var(--muted)'}}> {{f.plazo ? f.plazo+' días' : '—'}}</td>
+                  <td style={{fontSize:'.78rem'}}> {{fmtDate(f.fechaPago)}}</td>
+                  <td style={{fontSize:'.76rem',color:'var(--muted)'}}> {{f.oc||'—'}}</td>
                   <td><SiiBadge sii={{f.sii}}/></td>
                   <td>
                     {{esImpaga && (
@@ -441,14 +441,14 @@ function ClientesView({{facturas}}) {{
             const pct = c.total > 0 ? Math.round(c.pagado/c.total*100) : 0;
             return (
               <tr key={{c.rut}}>
-                <td style={{{{fontWeight:600,color:'var(--navy)'}}}}> {{c.razon}}</td>
-                <td style={{{{color:'var(--muted)',fontSize:'.78rem'}}}}> {{c.rut}}</td>
-                <td><span style={{{{fontWeight:700,color:'var(--warn)'}}}}> {{c.nImpagas}}</span><span style={{{{color:'var(--muted)',fontSize:'.78rem'}}}}> imp. / {{c.nFacturas}}</span></td>
-                <td style={{{{fontSize:'.82rem'}}}}> {{fmtM(c.total)}}</td>
-                <td style={{{{fontWeight:700,color:'var(--danger)'}}}}> {{fmtM(c.pendiente)}}</td>
-                <td style={{{{width:130}}}}>
-                  <div style={{{{display:'flex',justifyContent:'space-between',fontSize:'.72rem',color:'var(--muted)',marginBottom:3}}}}><span>{{pct}}%</span></div>
-                  <div className="progress-bar"><div className="progress-fill" style={{{{width:pct+'%'}}}}/></div>
+                <td style={{fontWeight:600,color:'var(--navy)'}}> {{c.razon}}</td>
+                <td style={{color:'var(--muted)',fontSize:'.78rem'}}> {{c.rut}}</td>
+                <td><span style={{fontWeight:700,color:'var(--warn)'}}> {{c.nImpagas}}</span><span style={{color:'var(--muted)',fontSize:'.78rem'}}> imp. / {{c.nFacturas}}</span></td>
+                <td style={{fontSize:'.82rem'}}> {{fmtM(c.total)}}</td>
+                <td style={{fontWeight:700,color:'var(--danger)'}}> {{fmtM(c.pendiente)}}</td>
+                <td style={{width:130}}>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:'.72rem',color:'var(--muted)',marginBottom:3}}><span>{{pct}}%</span></div>
+                  <div className="progress-bar"><div className="progress-fill" style={{width:pct+'%'}}/></div>
                 </td>
               </tr>
             );
