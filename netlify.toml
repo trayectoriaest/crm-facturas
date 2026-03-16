@@ -1,0 +1,7 @@
+[[redirects]]
+  from   = "/api/pagar"
+  to     = "/.netlify/functions/pagar"
+  status = 200
+
+[build]
+  publish = "."
