@@ -9,149 +9,149 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
+    *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
+    :root{{
       --bg:#f0f4fa; --surface:#fff; --card:#fff; --border:#dde4f0; --border-lt:#eef2f9;
       --navy:#1e2d6e; --blue:#3a6fd8; --blue-lt:#5fb3f0; --accent:#3a6fd8; --accent-hv:#2d5bbf; --accent-bg:#eef4fd;
       --danger:#d93b3b; --danger-bg:#fff0f0; --success:#1a9e6a; --success-bg:#edfaf4;
       --warn:#d97b10; --warn-bg:#fff7ed; --text:#1a2340; --text-2:#3d4f72; --muted:#7d90b5;
       --radius:10px; --shadow:0 1px 4px rgba(30,45,110,.08); --shadow-md:0 4px 16px rgba(30,45,110,.10);
-    }
-    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
-    .crm-root{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
-    .sidebar{background:var(--navy);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-    .sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:8px}
-    .logo-mark{display:flex;align-items:center;gap:10px}
-    .logo-icon{width:34px;height:34px;flex-shrink:0}
-    .logo-icon svg{width:100%;height:100%}
-    .logo-text{color:#fff;font-size:1.05rem;font-weight:700;line-height:1.2}
-    .logo-text span{display:block;font-size:.7rem;font-weight:400;color:rgba(255,255,255,.5);margin-top:1px}
-    .nav-section{padding:8px 12px;font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.2px;margin-top:4px}
-    .nav-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:2px 8px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.65);font-family:'Inter',sans-serif;font-size:.84rem;font-weight:500;cursor:pointer;transition:all .15s;text-align:left;width:calc(100% - 16px)}
-    .nav-btn:hover{background:rgba(255,255,255,.08);color:#fff}
-    .nav-btn.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(58,111,216,.4)}
-    .nav-icon{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
-    .nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px}
-    .sync-info{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,.1);font-size:.7rem;color:rgba(255,255,255,.35);text-align:center}
-    .main{padding:28px 32px;overflow-y:auto;background:var(--bg)}
-    .page-header{margin-bottom:24px}
-    .page-title{font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:4px}
-    .page-sub{color:var(--muted);font-size:.82rem}
-    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
-    .stat-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-    .stat-label{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
-    .stat-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}
-    .stat-val{font-size:1.45rem;font-weight:700;color:var(--navy)}
-    .stat-sub{font-size:.72rem;color:var(--muted);margin-top:3px}
-    .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
-    .table-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-lt);flex-wrap:wrap;gap:10px}
-    .table-title{font-weight:600;font-size:.88rem;color:var(--navy)}
-    table{width:100%;border-collapse:collapse}
-    thead tr{background:#f7f9fd}
-    th{padding:10px 14px;text-align:left;font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;border-bottom:1px solid var(--border)}
-    td{padding:11px 14px;font-size:.83rem;border-top:1px solid var(--border-lt);color:var(--text-2)}
-    tr:hover td{background:#f8faff}
-    .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:600;white-space:nowrap}
-    .badge-danger{background:var(--danger-bg);color:var(--danger)}
-    .badge-warn{background:var(--warn-bg);color:var(--warn)}
-    .badge-success{background:var(--success-bg);color:var(--success)}
-    .badge-blue{background:var(--accent-bg);color:var(--blue)}
-    .badge-muted{background:#f0f2f7;color:var(--muted)}
-    .btn{padding:8px 16px;border-radius:8px;border:none;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-    .btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(58,111,216,.25)}.btn-primary:hover{background:var(--accent-hv)}
-    .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
-    .btn-success{background:var(--success-bg);color:var(--success);border:1px solid rgba(26,158,106,.2)}.btn-success:hover{background:#d5f5ea}
-    .btn-warn{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(217,123,16,.2)}
-    .btn-sm{padding:5px 11px;font-size:.76rem}
-    .btn:disabled{opacity:.45;cursor:not-allowed}
-    .search-bar{background:#f5f7fd;border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:.83rem;outline:none;width:220px;transition:border .15s}
-    .search-bar:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(58,111,216,.1)}
-    .select-bar{background:#f5f7fd;border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:.83rem;outline:none}
-    .filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-    .tabs{display:flex;gap:4px;margin-bottom:20px;background:#f0f4fa;border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content}
-    .tab{padding:6px 14px;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .15s}
-    .tab.active{background:#fff;color:var(--navy);font-weight:700;box-shadow:0 1px 4px rgba(30,45,110,.1)}
-    .empty-state{text-align:center;padding:44px;color:var(--muted)}
-    .progress-bar{height:6px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:4px}
-    .progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue-lt),var(--blue));transition:width .4s}
-    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .overlay{position:fixed;inset:0;background:rgba(20,30,70,.45);display:flex;align-items:center;justify-content:center;z-index:200;animation:fadeIn .15s ease;backdrop-filter:blur(2px)}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .modal{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px;width:520px;max-height:92vh;overflow-y:auto;animation:slideUp .2s ease;box-shadow:var(--shadow-md)}
-    @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
-    .modal-title{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:16px}
-    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:14px;border-top:1px solid var(--border-lt)}
-    .kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-    .kv{display:flex;flex-direction:column;gap:3px;background:#f7f9fd;border-radius:8px;padding:10px 12px}
-    .kv-key{font-size:.69rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-    .kv-val{font-size:.88rem;font-weight:600;color:var(--navy)}
-    .toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-size:.84rem;font-weight:600;z-index:999;animation:slideUp .2s ease;display:flex;align-items:center;gap:8px}
-    .saving-row td{opacity:.5}
-    .atraso-chip{display:inline-block;padding:2px 9px;border-radius:6px;font-size:.7rem;font-weight:600}
+    }}
+    body{{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}}
+    .crm-root{{display:grid;grid-template-columns:240px 1fr;min-height:100vh}}
+    .sidebar{{background:var(--navy);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}}
+    .sidebar-logo{{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:8px}}
+    .logo-mark{{display:flex;align-items:center;gap:10px}}
+    .logo-icon{{width:34px;height:34px;flex-shrink:0}}
+    .logo-icon svg{{width:100%;height:100%}}
+    .logo-text{{color:#fff;font-size:1.05rem;font-weight:700;line-height:1.2}}
+    .logo-text span{{display:block;font-size:.7rem;font-weight:400;color:rgba(255,255,255,.5);margin-top:1px}}
+    .nav-section{{padding:8px 12px;font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.2px;margin-top:4px}}
+    .nav-btn{{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:2px 8px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.65);font-family:'Inter',sans-serif;font-size:.84rem;font-weight:500;cursor:pointer;transition:all .15s;text-align:left;width:calc(100% - 16px)}}
+    .nav-btn:hover{{background:rgba(255,255,255,.08);color:#fff}}
+    .nav-btn.active{{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(58,111,216,.4)}}
+    .nav-icon{{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}}
+    .nav-badge{{margin-left:auto;background:var(--danger);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px}}
+    .sync-info{{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,.1);font-size:.7rem;color:rgba(255,255,255,.35);text-align:center}}
+    .main{{padding:28px 32px;overflow-y:auto;background:var(--bg)}}
+    .page-header{{margin-bottom:24px}}
+    .page-title{{font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:4px}}
+    .page-sub{{color:var(--muted);font-size:.82rem}}
+    .stats-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}}
+    .stat-card{{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}}
+    .stat-card-top{{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}}
+    .stat-label{{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}}
+    .stat-icon{{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}}
+    .stat-val{{font-size:1.45rem;font-weight:700;color:var(--navy)}}
+    .stat-sub{{font-size:.72rem;color:var(--muted);margin-top:3px}}
+    .table-wrap{{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}}
+    .table-header{{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-lt);flex-wrap:wrap;gap:10px}}
+    .table-title{{font-weight:600;font-size:.88rem;color:var(--navy)}}
+    table{{width:100%;border-collapse:collapse}}
+    thead tr{{background:#f7f9fd}}
+    th{{padding:10px 14px;text-align:left;font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;border-bottom:1px solid var(--border)}}
+    td{{padding:11px 14px;font-size:.83rem;border-top:1px solid var(--border-lt);color:var(--text-2)}}
+    tr:hover td{{background:#f8faff}}
+    .badge{{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:600;white-space:nowrap}}
+    .badge-danger{{background:var(--danger-bg);color:var(--danger)}}
+    .badge-warn{{background:var(--warn-bg);color:var(--warn)}}
+    .badge-success{{background:var(--success-bg);color:var(--success)}}
+    .badge-blue{{background:var(--accent-bg);color:var(--blue)}}
+    .badge-muted{{background:#f0f2f7;color:var(--muted)}}
+    .btn{{padding:8px 16px;border-radius:8px;border:none;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}}
+    .btn-primary{{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(58,111,216,.25)}}.btn-primary:hover{{background:var(--accent-hv)}}
+    .btn-ghost{{background:transparent;color:var(--text-2);border:1px solid var(--border)}}.btn-ghost:hover{{border-color:var(--blue);color:var(--blue)}}
+    .btn-success{{background:var(--success-bg);color:var(--success);border:1px solid rgba(26,158,106,.2)}}.btn-success:hover{{background:#d5f5ea}}
+    .btn-warn{{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(217,123,16,.2)}}
+    .btn-sm{{padding:5px 11px;font-size:.76rem}}
+    .btn:disabled{{opacity:.45;cursor:not-allowed}}
+    .search-bar{{background:#f5f7fd;border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:.83rem;outline:none;width:220px;transition:border .15s}}
+    .search-bar:focus{{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(58,111,216,.1)}}
+    .select-bar{{background:#f5f7fd;border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:.83rem;outline:none}}
+    .filter-bar{{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}}
+    .tabs{{display:flex;gap:4px;margin-bottom:20px;background:#f0f4fa;border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content}}
+    .tab{{padding:6px 14px;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .15s}}
+    .tab.active{{background:#fff;color:var(--navy);font-weight:700;box-shadow:0 1px 4px rgba(30,45,110,.1)}}
+    .empty-state{{text-align:center;padding:44px;color:var(--muted)}}
+    .progress-bar{{height:6px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:4px}}
+    .progress-fill{{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue-lt),var(--blue));transition:width .4s}}
+    .two-col{{display:grid;grid-template-columns:1fr 1fr;gap:20px}}
+    .overlay{{position:fixed;inset:0;background:rgba(20,30,70,.45);display:flex;align-items:center;justify-content:center;z-index:200;animation:fadeIn .15s ease;backdrop-filter:blur(2px)}}
+    @keyframes fadeIn{{from{{opacity:0}}to{{opacity:1}}}}
+    .modal{{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px;width:520px;max-height:92vh;overflow-y:auto;animation:slideUp .2s ease;box-shadow:var(--shadow-md)}}
+    @keyframes slideUp{{from{{transform:translateY(16px);opacity:0}}to{{transform:translateY(0);opacity:1}}}}
+    .modal-title{{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:16px}}
+    .modal-actions{{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:14px;border-top:1px solid var(--border-lt)}}
+    .kv-grid{{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}}
+    .kv{{display:flex;flex-direction:column;gap:3px;background:#f7f9fd;border-radius:8px;padding:10px 12px}}
+    .kv-key{{font-size:.69rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}}
+    .kv-val{{font-size:.88rem;font-weight:600;color:var(--navy)}}
+    .toast{{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-size:.84rem;font-weight:600;z-index:999;animation:slideUp .2s ease;display:flex;align-items:center;gap:8px}}
+    .saving-row td{{opacity:.5}}
+    .atraso-chip{{display:inline-block;padding:2px 9px;border-radius:6px;font-size:.7rem;font-weight:600}}
   </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useCallback, useMemo } = React;
+const {{ useState, useEffect, useCallback, useMemo }} = React;
 const TODAY = new Date().toISOString().split('T')[0];
 
 /* ── DATOS ── */
 const FACTURAS_RAW = [{"row":2,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-06","neto":16285480.0,"total":19379721.0,"nFactura":"3639","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501513691","sii":"ENERO"},{"row":3,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-06","neto":18440363.0,"total":21944032.0,"nFactura":"3640","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501513689","sii":"ENERO"},{"row":4,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-06","neto":26617127.0,"total":31674381.0,"nFactura":"3641","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501516325","sii":"ENERO"},{"row":5,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-06","neto":1383753.0,"total":1646666.0,"nFactura":"3642","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501507071","sii":"ENERO"},{"row":6,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-06","neto":739996.0,"total":880595.0,"nFactura":"3643","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501507197","sii":"ENERO"},{"row":7,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-06","neto":684454.0,"total":814500.0,"nFactura":"3644","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501513697","sii":"ENERO"},{"row":8,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-07","neto":3131167.0,"total":3726089.0,"nFactura":"3645","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"3501510326","sii":"ENERO"},{"row":9,"year":2026,"razon":"AGENCIA PRENDE SPA","rut":"77.006.448-1","fecha":"2026-01-07","neto":451804.0,"total":537647.0,"nFactura":"3646","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"951","sii":"ENERO"},{"row":10,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-07","neto":14827411.0,"total":17644619.0,"nFactura":"3647","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-10","oc":"","sii":"ENERO"},{"row":11,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-07","neto":8779208.0,"total":10447258.0,"nFactura":"3648","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-10","oc":"","sii":"ENERO"},{"row":12,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-07","neto":7065922.0,"total":8408447.0,"nFactura":"3649","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-10","oc":"","sii":"ENERO"},{"row":13,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-07","neto":2973217.0,"total":3538128.0,"nFactura":"3650","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-10","oc":"","sii":"ENERO"},{"row":14,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-09","neto":2125056.0,"total":2528817.0,"nFactura":"3651","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9945","sii":"ENERO"},{"row":15,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-09","neto":2155192.0,"total":2564678.0,"nFactura":"3652","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9943","sii":"ENERO"},{"row":16,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-09","neto":265632.0,"total":316102.0,"nFactura":"3653","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9942","sii":"ENERO"},{"row":17,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-09","neto":1106800.0,"total":1317092.0,"nFactura":"3654","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9949","sii":"ENERO"},{"row":18,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-09","neto":1460976.0,"total":1738561.0,"nFactura":"3655","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9944","sii":"ENERO"},{"row":19,"year":2026,"razon":"DISTRIBUIDORA Y COMERCIAL EUROVENDING LIMITADA","rut":"76.061.718-0","fecha":"2026-01-09","neto":3181113.0,"total":3785524.0,"nFactura":"3656","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-11","oc":"9945","sii":"ENERO"},{"row":20,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":1832663.0,"total":2180869.0,"nFactura":"3657","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9948","sii":"ENERO"},{"row":21,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":398448.0,"total":474153.0,"nFactura":"3658","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9946","sii":"ENERO"},{"row":22,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":4117296.0,"total":4899582.0,"nFactura":"3659","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9947","sii":"ENERO"},{"row":23,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":4156313.0,"total":4946012.0,"nFactura":"3660","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9954","sii":"ENERO"},{"row":24,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":56437759.0,"total":67160933.0,"nFactura":"3661","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"9936","sii":"ENERO"},{"row":25,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":5094911.0,"total":6062944.0,"nFactura":"3662","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"9940","sii":"ENERO"},{"row":26,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":162204.0,"total":193023.0,"nFactura":"3663","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9941","sii":"ENERO"},{"row":27,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-12","neto":10930813.0,"total":13007667.0,"nFactura":"3664","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-16","oc":"9939","sii":"ENERO"},{"row":28,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-13","neto":973988.0,"total":1159046.0,"nFactura":"3665","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"","sii":"ENERO"},{"row":29,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-01-13","neto":973988.0,"total":1159046.0,"nFactura":"3666","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-06","oc":"","sii":"ENERO"},{"row":30,"year":2026,"razon":"SOLUTIONS 2 GO CHILE LLC, AGENCIA EN CHILE","rut":"59.210.050-9","fecha":"2026-01-16","neto":14941550.0,"total":17780445.0,"nFactura":"3667","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-19","oc":"","sii":"ENERO"},{"row":31,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-01-17","neto":13239000.0,"total":15754410.0,"nFactura":"3668","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-19","oc":"","sii":"ENERO"},{"row":32,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-01-17","neto":4500000.0,"total":5355000.0,"nFactura":"3669","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-19","oc":"","sii":"ENERO"},{"row":33,"year":2026,"razon":"IMPORTADORA Y COMERCIALIZADORA TODO PRODUCTOS LTDA.","rut":"76.202.270-2","fecha":"2026-01-19","neto":833739.0,"total":992149.0,"nFactura":"3670","estado":"Pagada","plazo":"30 días","fechaPago":"2026-02-03","oc":"","sii":"ENERO"},{"row":34,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-20","neto":2306377.0,"total":2744589.0,"nFactura":"3671","estado":"Anulada","plazo":"212","fechaPago":"","oc":"","sii":"ENERO"},{"row":35,"year":2026,"razon":"TAU SOLUTIONS SPA","rut":"77.745.305-K","fecha":"2026-01-21","neto":363171.0,"total":432173.0,"nFactura":"3673","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-09","oc":"","sii":"ENERO"},{"row":36,"year":2026,"razon":"GRETA CHILE S.A.","rut":"96.942.690-0","fecha":"2026-01-21","neto":2787750.0,"total":3317423.0,"nFactura":"3674","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":37,"year":2026,"razon":"GRETA CHILE S.A.","rut":"96.942.690-0","fecha":"2026-01-21","neto":8458400.0,"total":10065496.0,"nFactura":"3675","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":38,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-01-21","neto":21131410.0,"total":25146378.0,"nFactura":"3676","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":39,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-01-21","neto":8875192.0,"total":10561478.0,"nFactura":"3677","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":40,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-01-21","neto":8734316.0,"total":10393836.0,"nFactura":"3678","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":41,"year":2026,"razon":"ECOFIBRAS S A","rut":"99.545.960-4","fecha":"2026-01-27","neto":331792.0,"total":394832.0,"nFactura":"3679","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-05","oc":"","sii":"ENERO"},{"row":42,"year":2026,"razon":"AMBIPAR RECYNOR SPA","rut":"76.738.813-6","fecha":"2026-01-27","neto":1116769.0,"total":1328955.0,"nFactura":"3680","estado":"Pagada","plazo":"30 días","fechaPago":"3036-03-04","oc":"","sii":"ENERO"},{"row":43,"year":2026,"razon":"AMBIPAR SERVICIOS DE VALORIZACION LTDA","rut":"78.874.640-7","fecha":"2026-01-27","neto":5571258.0,"total":6629797.0,"nFactura":"3681","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":44,"year":2026,"razon":"AMBIPAR ENVIRONMENT CHILE LIMITADA","rut":"96.824.110-9","fecha":"2026-01-27","neto":6664937.0,"total":7931275.0,"nFactura":"3682","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":45,"year":2026,"razon":"DIFFUPAR SPA","rut":"76.717.317-2","fecha":"2026-01-27","neto":2306377.0,"total":2744589.0,"nFactura":"3683","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":46,"year":2026,"razon":"AMBIPAR CHILE SERVICIOS INTEGRALES LIMITADA","rut":"76.943.018-0","fecha":"2026-01-28","neto":4402449.0,"total":5238914.0,"nFactura":"3684","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-16","oc":"","sii":"ENERO"},{"row":47,"year":2026,"razon":"BOSCH  REXROTH CHILE SPA","rut":"76.365.959-3","fecha":"2026-01-28","neto":3215711.0,"total":3826696.0,"nFactura":"3685","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"ENERO"},{"row":48,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-01-27","neto":-2306377.0,"total":-2744589.0,"nFactura":"212","estado":"Anulada","plazo":"3671","fechaPago":"","oc":"","sii":"ENERO"},{"row":49,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-27","neto":-14205606.0,"total":-16904671.0,"nFactura":"211","estado":"Anulada","plazo":"30 días","fechaPago":"","oc":"","sii":"ENERO"},{"row":50,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-27","neto":-9221483.0,"total":-10973565.0,"nFactura":"208","estado":"Anulada","plazo":"30 días","fechaPago":"","oc":"","sii":"ENERO"},{"row":51,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-27","neto":-6663646.0,"total":-7929739.0,"nFactura":"209","estado":"Anulada","plazo":"30 días","fechaPago":"","oc":"","sii":"ENERO"},{"row":52,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-01-27","neto":-2723246.0,"total":-3240663.0,"nFactura":"210","estado":"Anulada","plazo":"30 días","fechaPago":"","oc":"","sii":"ENERO"},{"row":53,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":17695049.0,"total":21057108.0,"nFactura":"3686","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":54,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":21186806.0,"total":25212299.0,"nFactura":"3687","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":55,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":29058318.0,"total":34579398.0,"nFactura":"3688","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":56,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":1393329.0,"total":1658062.0,"nFactura":"3689","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":57,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":1010316.0,"total":1202276.0,"nFactura":"3690","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":58,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":9985656.0,"total":11882931.0,"nFactura":"3691","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":59,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":11029638.0,"total":13125269.0,"nFactura":"3692","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":60,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":14861282.0,"total":17684926.0,"nFactura":"3693","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":61,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":2519875.0,"total":2998651.0,"nFactura":"3694","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":62,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":69997.0,"total":83296.0,"nFactura":"3695","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":63,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-02-04","neto":2892820.0,"total":3442456.0,"nFactura":"3696","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":64,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":1014449.0,"total":1207194.0,"nFactura":"3697","estado":"Anulada","plazo":"30 días","fechaPago":"213","oc":"","sii":"FEBRERO"},{"row":65,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":1409389.0,"total":1677173.0,"nFactura":"3698","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":66,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":4435845.0,"total":5278656.0,"nFactura":"3699","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":67,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":13578308.0,"total":16158187.0,"nFactura":"3700","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":68,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":730794.0,"total":869645.0,"nFactura":"3701","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":69,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":365397.0,"total":434822.0,"nFactura":"3702","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":70,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":4081723.0,"total":4857250.0,"nFactura":"3703","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":71,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":1014449.0,"total":1207194.0,"nFactura":"3704","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":72,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":16135189.0,"total":19200875.0,"nFactura":"3705","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":73,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":4449488.0,"total":5294891.0,"nFactura":"3706","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":74,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":4248262.0,"total":5055432.0,"nFactura":"3707","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":75,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":23158507.0,"total":27558623.0,"nFactura":"3708","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":76,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":1252790.0,"total":1490820.0,"nFactura":"3709","estado":"Pagada","plazo":"30 días","fechaPago":"2026-03-10","oc":"","sii":"FEBRERO"},{"row":77,"year":2026,"razon":"IMPORTADORA Y COMERCIALIZADORA TODO PRODUCTOS LTDA.","rut":"76.202.270-2","fecha":"2026-02-16","neto":921521.0,"total":1096610.0,"nFactura":"3710","estado":"Anulada","plazo":"215","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":78,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-02-17","neto":2726836.0,"total":3244935.0,"nFactura":"3711","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":79,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-02-17","neto":13964684.0,"total":16617974.0,"nFactura":"3712","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":80,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-02-17","neto":2191385.0,"total":2607748.0,"nFactura":"3713","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":81,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-02-17","neto":84098770.0,"total":100077536.0,"nFactura":"3714","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":82,"year":2026,"razon":"DIFFUPAR CHILE SPA","rut":"77.542.356-0","fecha":"2026-02-17","neto":15809217.0,"total":18812968.0,"nFactura":"3715","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":83,"year":2026,"razon":"INVERSIONES LA MUNDIAL LTDA","rut":"78.146.900-9","fecha":"2026-02-09","neto":-1014449.0,"total":-1207194.0,"nFactura":"213","estado":"Anulada","plazo":"30 días","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":84,"year":2026,"razon":"BOSCH  REXROTH CHILE SPA","rut":"76.365.959-3","fecha":"2026-02-11","neto":-3423679.0,"total":-4074178.0,"nFactura":"214","estado":"Anulada","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":85,"year":2026,"razon":"IMPORTADORA Y COMERCIALIZADORA TODO PRODUCTOS LTDA.","rut":"76.202.270-2","fecha":"2026-02-17","neto":-921521.0,"total":-1096610.0,"nFactura":"215","estado":"Anulada","plazo":"3710","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":86,"year":2026,"razon":"FLORES COMERCIAL S.A","rut":"76.129.552-7","fecha":"2026-02-19","neto":5684534.0,"total":6764595.0,"nFactura":"3716","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":87,"year":2026,"razon":"FLORES COMERCIAL S.A","rut":"76.129.552-7","fecha":"2026-02-19","neto":2146831.0,"total":2554729.0,"nFactura":"3717","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":88,"year":2026,"razon":"PARK SERVICIOS SPA","rut":"77.733.279-1","fecha":"2026-02-24","neto":7800824.0,"total":9282981.0,"nFactura":"3719","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":89,"year":2026,"razon":"AMBIPAR RECYNOR SPA","rut":"76.738.813-6","fecha":"2026-02-26","neto":1077397.0,"total":1282102.0,"nFactura":"3720","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":90,"year":2026,"razon":"ECOFIBRAS S A","rut":"99.545.960-4","fecha":"2026-02-26","neto":469685.0,"total":558925.0,"nFactura":"3721","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":91,"year":2026,"razon":"AMBIPAR CHILE SERVICIOS INTEGRALES LIMITADA","rut":"76.943.018-0","fecha":"2026-02-26","neto":5759451.0,"total":6853747.0,"nFactura":"3722","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":92,"year":2026,"razon":"AMBIPAR SERVICIOS DE VALORIZACION LTDA","rut":"78.874.640-7","fecha":"2026-02-26","neto":7713140.0,"total":9178637.0,"nFactura":"3723","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":93,"year":2026,"razon":"AMBIPAR ENVIRONMENT CHILE LIMITADA","rut":"96.824.110-9","fecha":"2026-02-26","neto":7295385.0,"total":8681508.0,"nFactura":"3724","estado":"Impaga","plazo":"30 días","fechaPago":"Pendiente","oc":"","sii":"FEBRERO"},{"row":94,"year":2026,"razon":"DIFFUPAR SPA","rut":"76.717.317-2","fecha":"2026-02-28","neto":3776466.0,"total":4493995.0,"nFactura":"3725","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":"FEBRERO"},{"row":95,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":2214291.0,"total":2635006.0,"nFactura":"3726","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":96,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":4098527.0,"total":4877247.0,"nFactura":"3727","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":97,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":3041913.0,"total":3619876.0,"nFactura":"3728","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":98,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":3030233.0,"total":3605977.0,"nFactura":"3729","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":99,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":15550626.0,"total":18505245.0,"nFactura":"3730","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":100,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":8393993.0,"total":9988852.0,"nFactura":"3731","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":101,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":11376510.0,"total":13538047.0,"nFactura":"3732","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":102,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-03","neto":16123543.0,"total":19187016.0,"nFactura":"3733","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":103,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":1159654.0,"total":1379988.0,"nFactura":"3734","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":104,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":9210574.0,"total":10960583.0,"nFactura":"3735","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":105,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":6716590.0,"total":7992742.0,"nFactura":"3736","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":106,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":6660950.0,"total":7926531.0,"nFactura":"3737","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":107,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":2076677.0,"total":2471246.0,"nFactura":"3738","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":108,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":1978839.0,"total":2354818.0,"nFactura":"3739","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":109,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":1982293.0,"total":2358929.0,"nFactura":"3740","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":110,"year":2026,"razon":"DISTRIBUIDORA PUIG CHILE LTDA","rut":"77.062.080-5","fecha":"2026-03-04","neto":628862.0,"total":748346.0,"nFactura":"3741","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":111,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-03-04","neto":24379519.0,"total":29011628.0,"nFactura":"3742","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":112,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-03-04","neto":27510573.0,"total":32737582.0,"nFactura":"3743","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":113,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-03-04","neto":37631818.0,"total":44781863.0,"nFactura":"3744","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":114,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-03-04","neto":3041460.0,"total":3619337.0,"nFactura":"3745","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""},{"row":115,"year":2026,"razon":"CELA COSMETICOS S.A.","rut":"96.920.840-7","fecha":"2026-03-04","neto":1775696.0,"total":2113078.0,"nFactura":"3746","estado":"Impaga","plazo":"30 días","fechaPago":"","oc":"","sii":""}];
 
 /* ── HELPERS ── */
-const fmtM = n => {
+const fmtM = n => {{
   if (!n) return '$0';
   if (n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
   if (n >= 1e6) return '$' + (n/1e6).toFixed(1) + 'M';
   if (n >= 1e3) return '$' + Math.round(n/1e3).toLocaleString('es-CL') + 'K';
   return '$' + Math.round(n).toLocaleString('es-CL');
-};
+}};
 const fmtFull = n => '$' + Math.round(n||0).toLocaleString('es-CL');
-const fmtDate = d => {
+const fmtDate = d => {{
   if (!d) return '—';
-  try { return new Date(d + 'T12:00:00').toLocaleDateString('es-CL', {day:'2-digit',month:'short',year:'numeric'}); } catch(e) { return d; }
-};
-const diasAtraso = fecha => {
+  try {{ return new Date(d + 'T12:00:00').toLocaleDateString('es-CL', {{day:'2-digit',month:'short',year:'numeric'}}); }} catch(e) {{ return d; }}
+}};
+const diasAtraso = fecha => {{
   if (!fecha) return 0;
   return Math.floor((new Date(TODAY) - new Date(fecha + 'T12:00:00')) / 86400000);
-};
+}};
 const estadoNorm = e => (e||'').toLowerCase().trim();
 
 /* ── BADGE ESTADO ── */
-function EstadoBadge({estado}) {
+function EstadoBadge({{estado}}) {{
   const e = estadoNorm(estado);
-  const map = {
+  const map = {{
     'pagada':  ['Pagada',  'badge-success'],
     'pagado':  ['Pagada',  'badge-success'],
     'impaga':  ['Impaga',  'badge-warn'],
     'pendiente':['Pendiente','badge-warn'],
     'vencida': ['Vencida', 'badge-danger'],
     'anulada': ['Anulada', 'badge-muted'],
-  };
+  }};
   const [label, cls] = map[e] || [estado || '—', 'badge-muted'];
-  return <span className={`badge ${cls}`}>{label}</span>;
-}
+  return <span className={{`badge ${{cls}}`}}>{{label}}</span>;
+}}
 
-function SiiBadge({sii}) {
+function SiiBadge({{sii}}) {{
   const v = (sii||'').toLowerCase().trim();
   if (!v || v === '—') return null;
   const ok = v === 'sí' || v === 'si' || v === 'yes' || v === '1' || v === 'true';
-  return <span className={`badge ${ok ? 'badge-success' : 'badge-danger'}`}>{ok ? '✓ SII' : '✗ SII'}</span>;
-}
+  return <span className={{`badge ${{ok ? 'badge-success' : 'badge-danger'}}`}}>{{ok ? '✓ SII' : '✗ SII'}}</span>;
+}}
 
-function AtrasoChip({fecha, estado}) {
+function AtrasoChip({{fecha, estado}}) {{
   const e = estadoNorm(estado);
   if (e === 'pagada' || e === 'pagado' || e === 'anulada') return null;
   const d = diasAtraso(fecha);
-  if (d <= 0) return <span className="atraso-chip" style={{background:'#edfaf4',color:'#1a9e6a'}}>Vigente</span>;
-  if (d <= 30) return <span className="atraso-chip" style={{background:'#fff7ed',color:'#d97b10'}}>{d}d atraso</span>;
-  return <span className="atraso-chip" style={{background:'#fff0f0',color:'#d93b3b'}}>{d}d atraso</span>;
-}
+  if (d <= 0) return <span className="atraso-chip" style={{{{background:'#edfaf4',color:'#1a9e6a'}}}}>Vigente</span>;
+  if (d <= 30) return <span className="atraso-chip" style={{{{background:'#fff7ed',color:'#d97b10'}}}}>{{d}}d atraso</span>;
+  return <span className="atraso-chip" style={{{{background:'#fff0f0',color:'#d93b3b'}}}}>{{d}}d atraso</span>;
+}}
 
 /* ── LOGO ── */
-function LogoIcon() {
+function LogoIcon() {{
   return (
     <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M8 14C8 11 10 9 13 9H20L14 17H8V14Z" fill="#5fb3f0"/>
@@ -161,59 +161,59 @@ function LogoIcon() {
       <path d="M26 25L32 17V28C32 31 30 33 27 33H20L26 25Z" fill="#3a6fd8"/>
     </svg>
   );
-}
+}}
 
 /* ── TOAST ── */
-function Toast({msg, onDone}) {
-  useEffect(() => { const t = setTimeout(onDone, 3000); return () => clearTimeout(t); }, []);
-  return <div className="toast">{msg}</div>;
-}
+function Toast({{msg, onDone}}) {{
+  useEffect(() => {{ const t = setTimeout(onDone, 3000); return () => clearTimeout(t); }}, []);
+  return <div className="toast">{{msg}}</div>;
+}}
 
 /* ── MODAL CONFIRMAR PAGO ── */
-function ModalPago({factura, onClose, onConfirm, saving}) {
+function ModalPago({{factura, onClose, onConfirm, saving}}) {{
   return (
-    <div className="overlay" onClick={e => e.target===e.currentTarget && onClose()}>
+    <div className="overlay" onClick={{e => e.target===e.currentTarget && onClose()}}>
       <div className="modal">
         <p className="modal-title">💰 Confirmar Pago</p>
         <div className="kv-grid">
-          <div className="kv"><span className="kv-key">Cliente</span><span className="kv-val">{factura.razon}</span></div>
-          <div className="kv"><span className="kv-key">N° Factura</span><span className="kv-val">{factura.nFactura}</span></div>
-          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{color:'var(--success)'}}>{{fmtFull(factura.total)}}</span></div>
-          <div className="kv"><span className="kv-key">Fecha Factura</span><span className="kv-val">{fmtDate(factura.fecha)}</span></div>
+          <div className="kv"><span className="kv-key">Cliente</span><span className="kv-val">{{factura.razon}}</span></div>
+          <div className="kv"><span className="kv-key">N° Factura</span><span className="kv-val">{{factura.nFactura}}</span></div>
+          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{{{color:'var(--success)'}}}}>{{{fmtFull(factura.total)}}}</span></div>
+          <div className="kv"><span className="kv-key">Fecha Factura</span><span className="kv-val">{{fmtDate(factura.fecha)}}</span></div>
         </div>
-        <p style={{fontSize:'.84rem',color:'var(--text-2)',lineHeight:1.6}}>
-          Al confirmar, se actualizará el estado a <strong>Pagada</strong> directamente en el Excel de SharePoint (<strong>Facturación EST {factura.year}.xlsx</strong>, fila {factura.row}).
+        <p style={{{{fontSize:'.84rem',color:'var(--text-2)',lineHeight:1.6}}}}>
+          Al confirmar, se actualizará el estado a <strong>Pagada</strong> directamente en el Excel de SharePoint (<strong>Facturación EST {{factura.year}}.xlsx</strong>, fila {{factura.row}}).
         </p>
         <div className="modal-actions">
-          <button className="btn btn-ghost" onClick={onClose} disabled={saving}>Cancelar</button>
-          <button className="btn btn-success" onClick={onConfirm} disabled={saving}>
-            {saving ? '⏳ Guardando...' : '✓ Confirmar Pago'}
+          <button className="btn btn-ghost" onClick={{onClose}} disabled={{saving}}>Cancelar</button>
+          <button className="btn btn-success" onClick={{onConfirm}} disabled={{saving}}>
+            {{saving ? '⏳ Guardando...' : '✓ Confirmar Pago'}}
           </button>
         </div>
       </div>
     </div>
   );
-}
+}}
 
 /* ── API MARCAR PAGADA ── */
-async function marcarPagadaAPI(factura) {
-  const resp = await fetch('/api/pagar', {
+async function marcarPagadaAPI(factura) {{
+  const resp = await fetch('/api/pagar', {{
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+    headers: {{ 'Content-Type': 'application/json' }},
+    body: JSON.stringify({{
       year:     factura.year,
       row:      factura.row,
       nFactura: factura.nFactura
-    })
-  });
+    }})
+  }});
   if (!resp.ok) throw new Error(await resp.text());
   return resp.json();
-}
+}}
 
 /* ══════════════════════════════════════════
    DASHBOARD
 ══════════════════════════════════════════ */
-function Dashboard({facturas, setView}) {
+function Dashboard({{facturas, setView}}) {{
   const activas = facturas.filter(f => estadoNorm(f.estado) !== 'anulada');
   const pagadas = activas.filter(f => ['pagada','pagado'].includes(estadoNorm(f.estado)));
   const impagas = activas.filter(f => !['pagada','pagado','anulada'].includes(estadoNorm(f.estado)));
@@ -225,36 +225,36 @@ function Dashboard({facturas, setView}) {
   const recup = totalFacturado > 0 ? Math.round(totalPagado/totalFacturado*100) : 0;
 
   // Top clientes por pendiente
-  const porCliente = {};
-  impagas.forEach(f => {
-    if (!porCliente[f.razon]) porCliente[f.razon] = {razon: f.razon, rut: f.rut, pendiente: 0, nImpagas: 0};
+  const porCliente = {{}};
+  impagas.forEach(f => {{
+    if (!porCliente[f.razon]) porCliente[f.razon] = {{razon: f.razon, rut: f.rut, pendiente: 0, nImpagas: 0}};
     porCliente[f.razon].pendiente += f.total||0;
     porCliente[f.razon].nImpagas++;
-  });
+  }});
   const top5 = Object.values(porCliente).sort((a,b) => b.pendiente - a.pendiente).slice(0,5);
 
   return (
     <>
       <div className="page-header">
         <p className="page-title">Dashboard</p>
-        <p className="page-sub">Trayectoria EST · {activas.length} facturas activas · Actualizado 16/03/2026</p>
+        <p className="page-sub">Trayectoria EST · {{activas.length}} facturas activas · Actualizado 16/03/2026</p>
       </div>
       <div className="stats-grid">
-        {[
-          {label:'Total Facturado', val:fmtM(totalFacturado), sub:fmtFull(totalFacturado), icon:'📋', bg:'#eef4fd', ic:'var(--blue)'},
-          {label:'Por Cobrar',      val:fmtM(totalPendiente), sub:fmtFull(totalPendiente), icon:'⏳', bg:'#fff7ed', ic:'var(--warn)'},
-          {label:'Recuperado',      val:fmtM(totalPagado),   sub:`${recup}% del total`,  icon:'✅', bg:'#edfaf4', ic:'var(--success)'},
-          {label:'Vencidas',        val:vencidas.length,      sub:fmtM(vencidas.reduce((s,f)=>s+(f.total||0),0))+' en riesgo', icon:'⚠️', bg:'#fff0f0', ic:'var(--danger)'},
+        {{[
+          {{label:'Total Facturado', val:fmtM(totalFacturado), sub:fmtFull(totalFacturado), icon:'📋', bg:'#eef4fd', ic:'var(--blue)'}},
+          {{label:'Por Cobrar',      val:fmtM(totalPendiente), sub:fmtFull(totalPendiente), icon:'⏳', bg:'#fff7ed', ic:'var(--warn)'}},
+          {{label:'Recuperado',      val:fmtM(totalPagado),   sub:`${{recup}}% del total`,  icon:'✅', bg:'#edfaf4', ic:'var(--success)'}},
+          {{label:'Vencidas',        val:vencidas.length,      sub:fmtM(vencidas.reduce((s,f)=>s+(f.total||0),0))+' en riesgo', icon:'⚠️', bg:'#fff0f0', ic:'var(--danger)'}},
         ].map(c => (
-          <div key={c.label} className="stat-card">
+          <div key={{c.label}} className="stat-card">
             <div className="stat-card-top">
-              <div className="stat-label">{c.label}</div>
-              <div className="stat-icon" style={{background:c.bg}}>{c.icon}</div>
+              <div className="stat-label">{{c.label}}</div>
+              <div className="stat-icon" style={{{{background:c.bg}}}}>{{c.icon}}</div>
             </div>
-            <div className="stat-val">{c.val}</div>
-            <div className="stat-sub">{c.sub}</div>
+            <div className="stat-val">{{c.val}}</div>
+            <div className="stat-sub">{{c.sub}}</div>
           </div>
-        ))}
+        ))}}
       </div>
       <div className="two-col">
         <div className="table-wrap">
@@ -263,45 +263,45 @@ function Dashboard({facturas, setView}) {
           </div>
           <table>
             <thead><tr><th>#</th><th>Cliente</th><th>Pendiente</th><th>Facturas</th></tr></thead>
-            <tbody>{top5.map((c,i) => (
-              <tr key={c.razon}>
-                <td style={{fontWeight:700,color:'var(--muted)'}}>#{i+1}</td>
-                <td><div style={{fontWeight:600,color:'var(--navy)'}}> {c.razon}</div><div style={{fontSize:'.74rem',color:'var(--muted)'}}> {c.rut}</div></td>
-                <td style={{fontWeight:700,color:'var(--danger)'}}> {fmtM(c.pendiente)}</td>
-                <td><span style={{fontWeight:700,color:'var(--warn)'}}> {c.nImpagas}</span> impaga(s)</td>
+            <tbody>{{top5.map((c,i) => (
+              <tr key={{c.razon}}>
+                <td style={{{{fontWeight:700,color:'var(--muted)'}}}}>#{{i+1}}</td>
+                <td><div style={{{{fontWeight:600,color:'var(--navy)'}}}}> {{c.razon}}</div><div style={{{{fontSize:'.74rem',color:'var(--muted)'}}}}> {{c.rut}}</div></td>
+                <td style={{{{fontWeight:700,color:'var(--danger)'}}}}> {{fmtM(c.pendiente)}}</td>
+                <td><span style={{{{fontWeight:700,color:'var(--warn)'}}}}> {{c.nImpagas}}</span> impaga(s)</td>
               </tr>
-            ))}</tbody>
+            ))}}</tbody>
           </table>
         </div>
         <div className="table-wrap">
           <div className="table-header">
             <span className="table-title">Facturas Vencidas Recientes</span>
-            <button className="btn btn-ghost btn-sm" onClick={()=>setView('facturas')}>Ver todas →</button>
+            <button className="btn btn-ghost btn-sm" onClick={{()=>setView('facturas')}}>Ver todas →</button>
           </div>
           <table>
             <thead><tr><th>N° Factura</th><th>Cliente</th><th>Total</th><th>Atraso</th></tr></thead>
             <tbody>
-              {vencidas.slice(0,6).map(f => (
-                <tr key={f.nFactura+f.row}>
-                  <td style={{fontWeight:700}}> {f.nFactura}</td>
-                  <td style={{fontSize:'.8rem'}}>{f.razon}</td>
-                  <td style={{fontWeight:700,color:'var(--danger)'}}> {fmtM(f.total)}</td>
-                  <td><AtrasoChip fecha={f.fecha} estado={f.estado}/></td>
+              {{vencidas.slice(0,6).map(f => (
+                <tr key={{f.nFactura+f.row}}>
+                  <td style={{{{fontWeight:700}}}}> {{f.nFactura}}</td>
+                  <td style={{{{fontSize:'.8rem'}}}}>{{f.razon}}</td>
+                  <td style={{{{fontWeight:700,color:'var(--danger)'}}}}> {{fmtM(f.total)}}</td>
+                  <td><AtrasoChip fecha={{f.fecha}} estado={{f.estado}}/></td>
                 </tr>
-              ))}
-              {vencidas.length===0 && <tr><td colSpan="4"><div className="empty-state" style={{padding:20}}>Sin facturas vencidas 🎉</div></td></tr>}
+              ))}}
+              {{vencidas.length===0 && <tr><td colSpan="4"><div className="empty-state" style={{{{padding:20}}}}>Sin facturas vencidas 🎉</div></td></tr>}}
             </tbody>
           </table>
         </div>
       </div>
     </>
   );
-}
+}}
 
 /* ══════════════════════════════════════════
    FACTURAS
 ══════════════════════════════════════════ */
-function FacturasView({facturas, onPagar}) {
+function FacturasView({{facturas, onPagar}}) {{
   const [search,   setSearch]   = useState('');
   const [efEstado, setEfEstado] = useState('todas');
   const [efYear,   setEfYear]   = useState('todos');
@@ -309,8 +309,8 @@ function FacturasView({facturas, onPagar}) {
   const years  = [...new Set(facturas.map(f => f.year))].sort();
   const estados = ['todas','impaga','pagada','vencida','anulada'];
 
-  const fil = useMemo(() => {
-    return facturas.filter(f => {
+  const fil = useMemo(() => {{
+    return facturas.filter(f => {{
       const txt = (f.razon + f.rut + f.nFactura + f.oc).toLowerCase();
       if (!txt.includes(search.toLowerCase())) return false;
       if (efYear !== 'todos' && f.year !== parseInt(efYear)) return false;
@@ -321,16 +321,16 @@ function FacturasView({facturas, onPagar}) {
       if (efEstado === 'anulada') return e === 'anulada';
       if (efEstado === 'vencida') return !['pagada','pagado','anulada'].includes(e) && diasAtraso(f.fecha) > (parseInt(f.plazo)||30);
       return true;
-    }).sort((a,b) => (b.fecha||'').localeCompare(a.fecha||''));
-  }, [facturas, search, efEstado, efYear]);
+    }}).sort((a,b) => (b.fecha||'').localeCompare(a.fecha||''));
+  }}, [facturas, search, efEstado, efYear]);
 
-  const cnt = {
+  const cnt = {{
     todas:   facturas.length,
     impaga:  facturas.filter(f=>!['pagada','pagado','anulada'].includes(estadoNorm(f.estado))).length,
     pagada:  facturas.filter(f=>['pagada','pagado'].includes(estadoNorm(f.estado))).length,
     vencida: facturas.filter(f=>!['pagada','pagado','anulada'].includes(estadoNorm(f.estado))&&diasAtraso(f.fecha)>(parseInt(f.plazo)||30)).length,
     anulada: facturas.filter(f=>estadoNorm(f.estado)==='anulada').length,
-  };
+  }};
 
   return (
     <>
@@ -339,20 +339,20 @@ function FacturasView({facturas, onPagar}) {
         <p className="page-sub">Todas las facturas desde SharePoint</p>
       </div>
       <div className="filter-bar">
-        {estados.map(e => (
-          <button key={e} className={`btn btn-sm ${efEstado===e?'btn-primary':'btn-ghost'}`} onClick={()=>setEfEstado(e)}>
-            {e.charAt(0).toUpperCase()+e.slice(1)} ({cnt[e]||0})
+        {{estados.map(e => (
+          <button key={{e}} className={{`btn btn-sm ${{efEstado===e?'btn-primary':'btn-ghost'}}`}} onClick={{()=>setEfEstado(e)}}>
+            {{e.charAt(0).toUpperCase()+e.slice(1)}} ({{cnt[e]||0}})
           </button>
-        ))}
-        <select className="select-bar" value={efYear} onChange={e=>setEfYear(e.target.value)}>
+        ))}}
+        <select className="select-bar" value={{efYear}} onChange={{e=>setEfYear(e.target.value)}}>
           <option value="todos">Todos los años</option>
-          {years.map(y=><option key={y} value={y}>{y}</option>)}
+          {{years.map(y=><option key={{y}} value={{y}}>{{y}}</option>)}}
         </select>
       </div>
       <div className="table-wrap">
         <div className="table-header">
-          <span className="table-title">{fil.length} facturas</span>
-          <input className="search-bar" placeholder="🔍 Buscar cliente, RUT, N° factura..." value={search} onChange={e=>setSearch(e.target.value)}/>
+          <span className="table-title">{{fil.length}} facturas</span>
+          <input className="search-bar" placeholder="🔍 Buscar cliente, RUT, N° factura..." value={{search}} onChange={{e=>setSearch(e.target.value)}}/>
         </div>
         <table>
           <thead>
@@ -364,61 +364,61 @@ function FacturasView({facturas, onPagar}) {
             </tr>
           </thead>
           <tbody>
-            {fil.map(f => {
+            {{fil.map(f => {{
               const esImpaga = !['pagada','pagado','anulada'].includes(estadoNorm(f.estado));
               const vencida  = esImpaga && diasAtraso(f.fecha) > (parseInt(f.plazo)||30);
               return (
-                <tr key={f.nFactura+'-'+f.row+'-'+f.year} style={{background: vencida?'#fff8f8':esImpaga?'#fffdf5':''}}>
-                  <td style={{fontWeight:700,color:'var(--navy)'}}> {f.nFactura}</td>
-                  <td><div style={{fontWeight:600,fontSize:'.82rem'}}> {f.razon}</div></td>
-                  <td style={{color:'var(--muted)',fontSize:'.78rem'}}> {f.rut}</td>
-                  <td style={{fontSize:'.78rem',color:'var(--text-2)'}}> {fmtDate(f.fecha)}</td>
-                  <td style={{fontSize:'.82rem'}}> {fmtFull(f.neto)}</td>
-                  <td style={{fontWeight:700,color:vencida?'var(--danger)':esImpaga?'var(--warn)':'var(--success)'}}> {fmtFull(f.total)}</td>
-                  <td><EstadoBadge estado={f.estado}/></td>
-                  <td style={{fontSize:'.78rem',color:'var(--muted)'}}> {f.plazo ? f.plazo+' días' : '—'}</td>
-                  <td style={{fontSize:'.78rem'}}> {fmtDate(f.fechaPago)}</td>
-                  <td style={{fontSize:'.76rem',color:'var(--muted)'}}> {f.oc||'—'}</td>
-                  <td><SiiBadge sii={f.sii}/></td>
+                <tr key={{f.nFactura+'-'+f.row+'-'+f.year}} style={{{{background: vencida?'#fff8f8':esImpaga?'#fffdf5':''}}}}>
+                  <td style={{{{fontWeight:700,color:'var(--navy)'}}}}> {{f.nFactura}}</td>
+                  <td><div style={{{{fontWeight:600,fontSize:'.82rem'}}}}> {{f.razon}}</div></td>
+                  <td style={{{{color:'var(--muted)',fontSize:'.78rem'}}}}> {{f.rut}}</td>
+                  <td style={{{{fontSize:'.78rem',color:'var(--text-2)'}}}}> {{fmtDate(f.fecha)}}</td>
+                  <td style={{{{fontSize:'.82rem'}}}}> {{fmtFull(f.neto)}}</td>
+                  <td style={{{{fontWeight:700,color:vencida?'var(--danger)':esImpaga?'var(--warn)':'var(--success)'}}}}> {{fmtFull(f.total)}}</td>
+                  <td><EstadoBadge estado={{f.estado}}/></td>
+                  <td style={{{{fontSize:'.78rem',color:'var(--muted)'}}}}> {{f.plazo ? f.plazo+' días' : '—'}}</td>
+                  <td style={{{{fontSize:'.78rem'}}}}> {{fmtDate(f.fechaPago)}}</td>
+                  <td style={{{{fontSize:'.76rem',color:'var(--muted)'}}}}> {{f.oc||'—'}}</td>
+                  <td><SiiBadge sii={{f.sii}}/></td>
                   <td>
-                    {esImpaga && (
-                      <button className="btn btn-success btn-sm" title="Marcar como pagada" onClick={()=>onPagar(f)}>
+                    {{esImpaga && (
+                      <button className="btn btn-success btn-sm" title="Marcar como pagada" onClick={{()=>onPagar(f)}}>
                         ✓ Pagar
                       </button>
-                    )}
+                    )}}
                   </td>
                 </tr>
               );
-            })}
-            {fil.length===0 && <tr><td colSpan="12"><div className="empty-state">Sin facturas que mostrar.</div></td></tr>}
+            }})}}
+            {{fil.length===0 && <tr><td colSpan="12"><div className="empty-state">Sin facturas que mostrar.</div></td></tr>}}
           </tbody>
         </table>
       </div>
     </>
   );
-}
+}}
 
 /* ══════════════════════════════════════════
    CLIENTES
 ══════════════════════════════════════════ */
-function ClientesView({facturas}) {
+function ClientesView({{facturas}}) {{
   const [search, setSearch] = useState('');
 
-  const clientes = useMemo(() => {
-    const map = {};
-    facturas.filter(f=>estadoNorm(f.estado)!=='anulada').forEach(f => {
-      if (!map[f.rut]) map[f.rut] = {razon:f.razon, rut:f.rut, total:0, pendiente:0, pagado:0, nFacturas:0, nImpagas:0};
+  const clientes = useMemo(() => {{
+    const map = {{}};
+    facturas.filter(f=>estadoNorm(f.estado)!=='anulada').forEach(f => {{
+      if (!map[f.rut]) map[f.rut] = {{razon:f.razon, rut:f.rut, total:0, pendiente:0, pagado:0, nFacturas:0, nImpagas:0}};
       map[f.rut].nFacturas++;
       map[f.rut].total += f.total||0;
-      if (['pagada','pagado'].includes(estadoNorm(f.estado))) {
+      if (['pagada','pagado'].includes(estadoNorm(f.estado))) {{
         map[f.rut].pagado += f.total||0;
-      } else {
+      }} else {{
         map[f.rut].pendiente += f.total||0;
         map[f.rut].nImpagas++;
-      }
-    });
+      }}
+    }});
     return Object.values(map).sort((a,b) => b.pendiente - a.pendiente);
-  }, [facturas]);
+  }}, [facturas]);
 
   const fil = clientes.filter(c =>
     c.razon.toLowerCase().includes(search.toLowerCase()) || c.rut.includes(search)
@@ -428,42 +428,42 @@ function ClientesView({facturas}) {
     <>
       <div className="page-header">
         <p className="page-title">Clientes</p>
-        <p className="page-sub">{clientes.length} clientes con facturas activas</p>
+        <p className="page-sub">{{clientes.length}} clientes con facturas activas</p>
       </div>
       <div className="table-wrap">
         <div className="table-header">
-          <span className="table-title">{fil.length} clientes</span>
-          <input className="search-bar" placeholder="🔍 Buscar nombre o RUT..." value={search} onChange={e=>setSearch(e.target.value)}/>
+          <span className="table-title">{{fil.length}} clientes</span>
+          <input className="search-bar" placeholder="🔍 Buscar nombre o RUT..." value={{search}} onChange={{e=>setSearch(e.target.value)}}/>
         </div>
         <table>
           <thead><tr><th>Cliente</th><th>RUT</th><th>Facturas</th><th>Total Facturado</th><th>Pendiente</th><th>Recuperación</th></tr></thead>
-          <tbody>{fil.map(c => {
+          <tbody>{{fil.map(c => {{
             const pct = c.total > 0 ? Math.round(c.pagado/c.total*100) : 0;
             return (
-              <tr key={c.rut}>
-                <td style={{fontWeight:600,color:'var(--navy)'}}> {c.razon}</td>
-                <td style={{color:'var(--muted)',fontSize:'.78rem'}}> {c.rut}</td>
-                <td><span style={{fontWeight:700,color:'var(--warn)'}}> {c.nImpagas}</span><span style={{color:'var(--muted)',fontSize:'.78rem'}}> imp. / {c.nFacturas}</span></td>
-                <td style={{fontSize:'.82rem'}}> {fmtM(c.total)}</td>
-                <td style={{fontWeight:700,color:'var(--danger)'}}> {fmtM(c.pendiente)}</td>
-                <td style={{width:130}}>
-                  <div style={{display:'flex',justifyContent:'space-between',fontSize:'.72rem',color:'var(--muted)',marginBottom:3}}><span>{pct}%</span></div>
-                  <div className="progress-bar"><div className="progress-fill" style={{width:pct+'%'}}/></div>
+              <tr key={{c.rut}}>
+                <td style={{{{fontWeight:600,color:'var(--navy)'}}}}> {{c.razon}}</td>
+                <td style={{{{color:'var(--muted)',fontSize:'.78rem'}}}}> {{c.rut}}</td>
+                <td><span style={{{{fontWeight:700,color:'var(--warn)'}}}}> {{c.nImpagas}}</span><span style={{{{color:'var(--muted)',fontSize:'.78rem'}}}}> imp. / {{c.nFacturas}}</span></td>
+                <td style={{{{fontSize:'.82rem'}}}}> {{fmtM(c.total)}}</td>
+                <td style={{{{fontWeight:700,color:'var(--danger)'}}}}> {{fmtM(c.pendiente)}}</td>
+                <td style={{{{width:130}}}}>
+                  <div style={{{{display:'flex',justifyContent:'space-between',fontSize:'.72rem',color:'var(--muted)',marginBottom:3}}}}><span>{{pct}}%</span></div>
+                  <div className="progress-bar"><div className="progress-fill" style={{{{width:pct+'%'}}}}/></div>
                 </td>
               </tr>
             );
-          })}
+          }})}}
           </tbody>
         </table>
       </div>
     </>
   );
-}
+}}
 
 /* ══════════════════════════════════════════
    APP
 ══════════════════════════════════════════ */
-function App() {
+function App() {{
   const [facturas, setFacturas] = useState(FACTURAS_RAW);
   const [view,     setView]     = useState('dashboard');
   const [modal,    setModal]    = useState(null);  // factura a pagar
@@ -475,24 +475,24 @@ function App() {
 
   const handlePagar = (factura) => setModal(factura);
 
-  const handleConfirmarPago = async () => {
+  const handleConfirmarPago = async () => {{
     setSaving(true);
-    try {
+    try {{
       await marcarPagadaAPI(modal);
       // Actualizar estado local inmediatamente
       setFacturas(prev => prev.map(f =>
         f.row === modal.row && f.year === modal.year
-          ? {...f, estado: 'Pagada', fechaPago: TODAY}
+          ? {{...f, estado: 'Pagada', fechaPago: TODAY}}
           : f
       ));
       setToast('✅ Factura ' + modal.nFactura + ' marcada como pagada en SharePoint');
       setModal(null);
-    } catch(err) {
+    }} catch(err) {{
       setToast('❌ Error: ' + err.message);
-    } finally {
+    }} finally {{
       setSaving(false);
-    }
-  };
+    }}
+  }};
 
   return (
     <div className="crm-root">
@@ -504,17 +504,17 @@ function App() {
           </div>
         </div>
         <div className="nav-section">Menú</div>
-        {[
-          {id:'dashboard', icon:'📊', label:'Dashboard'},
-          {id:'facturas',  icon:'🧾', label:'Facturas', badge: impagas.length > 0 ? impagas.length : null},
-          {id:'clientes',  icon:'🏢', label:'Clientes'},
+        {{[
+          {{id:'dashboard', icon:'📊', label:'Dashboard'}},
+          {{id:'facturas',  icon:'🧾', label:'Facturas', badge: impagas.length > 0 ? impagas.length : null}},
+          {{id:'clientes',  icon:'🏢', label:'Clientes'}},
         ].map(n => (
-          <button key={n.id} className={`nav-btn ${view===n.id?'active':''}`} onClick={()=>setView(n.id)}>
-            <span className="nav-icon">{n.icon}</span>
-            {n.label}
-            {n.badge && <span className="nav-badge">{n.badge}</span>}
+          <button key={{n.id}} className={{`nav-btn ${{view===n.id?'active':''}}`}} onClick={{()=>setView(n.id)}}>
+            <span className="nav-icon">{{n.icon}}</span>
+            {{n.label}}
+            {{n.badge && <span className="nav-badge">{{n.badge}}</span>}}
           </button>
-        ))}
+        ))}}
         <div className="sync-info">
           🔄 Sincronizado desde SharePoint<br/>
           Actualizado 16/03/2026 a las 08:00
@@ -522,24 +522,24 @@ function App() {
       </nav>
 
       <main className="main">
-        {view === 'dashboard' && <Dashboard facturas={facturas} setView={setView}/>}
-        {view === 'facturas'  && <FacturasView facturas={facturas} onPagar={handlePagar}/>}
-        {view === 'clientes'  && <ClientesView facturas={facturas}/>}
+        {{view === 'dashboard' && <Dashboard facturas={{facturas}} setView={{setView}}/>}}
+        {{view === 'facturas'  && <FacturasView facturas={{facturas}} onPagar={{handlePagar}}/>}}
+        {{view === 'clientes'  && <ClientesView facturas={{facturas}}/>}}
       </main>
 
-      {modal && (
+      {{modal && (
         <ModalPago
-          factura={modal}
-          onClose={()=>setModal(null)}
-          onConfirm={handleConfirmarPago}
-          saving={saving}
+          factura={{modal}}
+          onClose={{()=>setModal(null)}}
+          onConfirm={{handleConfirmarPago}}
+          saving={{saving}}
         />
-      )}
+      )}}
 
-      {toast && <Toast msg={toast} onDone={()=>setToast(null)}/>}
+      {{toast && <Toast msg={{toast}} onDone={{()=>setToast(null)}}/>}}
     </div>
   );
-}
+}}
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
