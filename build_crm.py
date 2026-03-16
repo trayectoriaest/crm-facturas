@@ -31,7 +31,6 @@ SITE        = "https://ssisachile.sharepoint.com/sites/TrayectoriaEST-Remuneraci
 DRIVE_ID    = "b!94YSNWupIUmh41_AtdOVSPieLm_WNpBEh9tqCJhq7-HE4RJxxbTATpTpoCXdSMrL"
 BASE_PATH   = "Administración y Finanzas/{year}/Contabilidad/Trayectoria EST/Facturación"
 FILES       = {
-    2025: "Facturación EST 2025.xlsx",
     2026: "Facturación EST 2026.xlsx",
 }
 
@@ -140,7 +139,7 @@ def build_html(facturas):
     today_str = date.today().strftime("%d/%m/%Y")
     fj = json.dumps(facturas, ensure_ascii=False, separators=(',', ':'))
 
-    html = f"""<!DOCTYPE html>
+    html = """<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
@@ -240,7 +239,7 @@ const {{ useState, useEffect, useCallback, useMemo }} = React;
 const TODAY = new Date().toISOString().split('T')[0];
 
 /* ── DATOS ── */
-const FACTURAS_RAW = {fj};
+const FACTURAS_RAW = __FJ__;
 
 /* ── HELPERS ── */
 const fmtM = n => {{
@@ -379,7 +378,7 @@ function Dashboard({{facturas, setView}}) {{
     <>
       <div className="page-header">
         <p className="page-title">Dashboard</p>
-        <p className="page-sub">Trayectoria EST · {{activas.length}} facturas activas · Actualizado {today_str}</p>
+        <p className="page-sub">Trayectoria EST · {{activas.length}} facturas activas · Actualizado __TODAY__</p>
       </div>
       <div className="stats-grid">
         {{[
@@ -659,7 +658,7 @@ function App() {{
         ))}}
         <div className="sync-info">
           🔄 Sincronizado desde SharePoint<br/>
-          Actualizado {today_str} a las 08:00
+          Actualizado __TODAY__ a las 08:00
         </div>
       </nav>
 
@@ -687,6 +686,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
 </html>"""
+    html = html.replace('__FJ__', fj).replace('__TODAY__', today_str)
+    html = html.replace('{{', '{').replace('}}', '}')
     return html
 
 # ── MAIN ──────────────────────────────────────────────────────────────────────
