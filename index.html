@@ -178,7 +178,7 @@ function ModalPago({{factura, onClose, onConfirm, saving}}) {{
         <div className="kv-grid">
           <div className="kv"><span className="kv-key">Cliente</span><span className="kv-val">{{factura.razon}}</span></div>
           <div className="kv"><span className="kv-key">N° Factura</span><span className="kv-val">{{factura.nFactura}}</span></div>
-          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{color:'var(--success)'}}>{{{fmtFull(factura.total)}}}</span></div>
+          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{color:'var(--success)'}}>{fmtFull(factura.total)}</span></div>
           <div className="kv"><span className="kv-key">Fecha Factura</span><span className="kv-val">{{fmtDate(factura.fecha)}}</span></div>
         </div>
         <p style={{fontSize:'.84rem',color:'var(--text-2)',lineHeight:1.6}}>
