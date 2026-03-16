@@ -131,14 +131,14 @@ function EstadoBadge({estado}}) {
     'anulada': ['Anulada', 'badge-muted'],
   }};
   const [label, cls] = map[e] || [estado || '—', 'badge-muted'];
-  return <span className={{`badge ${cls}}`}}>{label}}</span>;
+  return <span className={`badge ${cls}}`}}>{label}}</span>;
 }}
 
 function SiiBadge({sii}}) {
   const v = (sii||'').toLowerCase().trim();
   if (!v || v === '—') return null;
   const ok = v === 'sí' || v === 'si' || v === 'yes' || v === '1' || v === 'true';
-  return <span className={{`badge ${ok ? 'badge-success' : 'badge-danger'}}`}}>{ok ? '✓ SII' : '✗ SII'}}</span>;
+  return <span className={`badge ${ok ? 'badge-success' : 'badge-danger'}}`}}>{ok ? '✓ SII' : '✗ SII'}}</span>;
 }}
 
 function AtrasoChip({fecha, estado}}) {
@@ -172,7 +172,7 @@ function Toast({msg, onDone}}) {
 /* ── MODAL CONFIRMAR PAGO ── */
 function ModalPago({factura, onClose, onConfirm, saving}}) {
   return (
-    <div className="overlay" onClick={{e => e.target===e.currentTarget && onClose()}}>
+    <div className="overlay" onClick={e => e.target===e.currentTarget && onClose()}}>
       <div className="modal">
         <p className="modal-title">💰 Confirmar Pago</p>
         <div className="kv-grid">
@@ -185,8 +185,8 @@ function ModalPago({factura, onClose, onConfirm, saving}}) {
           Al confirmar, se actualizará el estado a <strong>Pagada</strong> directamente en el Excel de SharePoint (<strong>Facturación EST {factura.year}}.xlsx</strong>, fila {factura.row}}).
         </p>
         <div className="modal-actions">
-          <button className="btn btn-ghost" onClick={{onClose}} disabled={{saving}}>Cancelar</button>
-          <button className="btn btn-success" onClick={{onConfirm}} disabled={{saving}}>
+          <button className="btn btn-ghost" onClick={onClose}} disabled={saving}}>Cancelar</button>
+          <button className="btn btn-success" onClick={onConfirm}} disabled={saving}}>
             {saving ? '⏳ Guardando...' : '✓ Confirmar Pago'}}
           </button>
         </div>
@@ -246,7 +246,7 @@ function Dashboard({facturas, setView}}) {
           {label:'Recuperado',      val:fmtM(totalPagado),   sub:`${recup}}% del total`,  icon:'✅', bg:'#edfaf4', ic:'var(--success)'}},
           {label:'Vencidas',        val:vencidas.length,      sub:fmtM(vencidas.reduce((s,f)=>s+(f.total||0),0))+' en riesgo', icon:'⚠️', bg:'#fff0f0', ic:'var(--danger)'}},
         ].map(c => (
-          <div key={{c.label}} className="stat-card">
+          <div key={c.label}} className="stat-card">
             <div className="stat-card-top">
               <div className="stat-label">{c.label}}</div>
               <div className="stat-icon" style={{background:c.bg}}>{c.icon}}</div>
@@ -264,7 +264,7 @@ function Dashboard({facturas, setView}}) {
           <table>
             <thead><tr><th>#</th><th>Cliente</th><th>Pendiente</th><th>Facturas</th></tr></thead>
             <tbody>{top5.map((c,i) => (
-              <tr key={{c.razon}}>
+              <tr key={c.razon}}>
                 <td style={{fontWeight:700,color:'var(--muted)'}}>#{i+1}}</td>
                 <td><div style={{fontWeight:600,color:'var(--navy)'}}> {c.razon}}</div><div style={{fontSize:'.74rem',color:'var(--muted)'}}> {c.rut}}</div></td>
                 <td style={{fontWeight:700,color:'var(--danger)'}}> {fmtM(c.pendiente)}}</td>
@@ -276,17 +276,17 @@ function Dashboard({facturas, setView}}) {
         <div className="table-wrap">
           <div className="table-header">
             <span className="table-title">Facturas Vencidas Recientes</span>
-            <button className="btn btn-ghost btn-sm" onClick={{()=>setView('facturas')}}>Ver todas →</button>
+            <button className="btn btn-ghost btn-sm" onClick={()=>setView('facturas')}}>Ver todas →</button>
           </div>
           <table>
             <thead><tr><th>N° Factura</th><th>Cliente</th><th>Total</th><th>Atraso</th></tr></thead>
             <tbody>
               {vencidas.slice(0,6).map(f => (
-                <tr key={{f.nFactura+f.row}}>
+                <tr key={f.nFactura+f.row}}>
                   <td style={{fontWeight:700}}> {f.nFactura}}</td>
                   <td style={{fontSize:'.8rem'}}>{f.razon}}</td>
                   <td style={{fontWeight:700,color:'var(--danger)'}}> {fmtM(f.total)}}</td>
-                  <td><AtrasoChip fecha={{f.fecha}} estado={{f.estado}}/></td>
+                  <td><AtrasoChip fecha={f.fecha}} estado={f.estado}}/></td>
                 </tr>
               ))}}
               {vencidas.length===0 && <tr><td colSpan="4"><div className="empty-state" style={{padding:20}}>Sin facturas vencidas 🎉</div></td></tr>}}
@@ -340,19 +340,19 @@ function FacturasView({facturas, onPagar}}) {
       </div>
       <div className="filter-bar">
         {estados.map(e => (
-          <button key={{e}} className={{`btn btn-sm ${efEstado===e?'btn-primary':'btn-ghost'}}`}} onClick={{()=>setEfEstado(e)}}>
+          <button key={e}} className={`btn btn-sm ${efEstado===e?'btn-primary':'btn-ghost'}}`}} onClick={()=>setEfEstado(e)}}>
             {e.charAt(0).toUpperCase()+e.slice(1)}} ({cnt[e]||0}})
           </button>
         ))}}
-        <select className="select-bar" value={{efYear}} onChange={{e=>setEfYear(e.target.value)}}>
+        <select className="select-bar" value={efYear}} onChange={e=>setEfYear(e.target.value)}}>
           <option value="todos">Todos los años</option>
-          {years.map(y=><option key={{y}} value={{y}}>{y}}</option>)}}
+          {years.map(y=><option key={y}} value={y}}>{y}}</option>)}}
         </select>
       </div>
       <div className="table-wrap">
         <div className="table-header">
           <span className="table-title">{fil.length}} facturas</span>
-          <input className="search-bar" placeholder="🔍 Buscar cliente, RUT, N° factura..." value={{search}} onChange={{e=>setSearch(e.target.value)}}/>
+          <input className="search-bar" placeholder="🔍 Buscar cliente, RUT, N° factura..." value={search}} onChange={e=>setSearch(e.target.value)}}/>
         </div>
         <table>
           <thead>
@@ -368,21 +368,21 @@ function FacturasView({facturas, onPagar}}) {
               const esImpaga = !['pagada','pagado','anulada'].includes(estadoNorm(f.estado));
               const vencida  = esImpaga && diasAtraso(f.fecha) > (parseInt(f.plazo)||30);
               return (
-                <tr key={{f.nFactura+'-'+f.row+'-'+f.year}} style={{background: vencida?'#fff8f8':esImpaga?'#fffdf5':''}}>
+                <tr key={f.nFactura+'-'+f.row+'-'+f.year}} style={{background: vencida?'#fff8f8':esImpaga?'#fffdf5':''}}>
                   <td style={{fontWeight:700,color:'var(--navy)'}}> {f.nFactura}}</td>
                   <td><div style={{fontWeight:600,fontSize:'.82rem'}}> {f.razon}}</div></td>
                   <td style={{color:'var(--muted)',fontSize:'.78rem'}}> {f.rut}}</td>
                   <td style={{fontSize:'.78rem',color:'var(--text-2)'}}> {fmtDate(f.fecha)}}</td>
                   <td style={{fontSize:'.82rem'}}> {fmtFull(f.neto)}}</td>
                   <td style={{fontWeight:700,color:vencida?'var(--danger)':esImpaga?'var(--warn)':'var(--success)'}}> {fmtFull(f.total)}}</td>
-                  <td><EstadoBadge estado={{f.estado}}/></td>
+                  <td><EstadoBadge estado={f.estado}}/></td>
                   <td style={{fontSize:'.78rem',color:'var(--muted)'}}> {f.plazo ? f.plazo+' días' : '—'}}</td>
                   <td style={{fontSize:'.78rem'}}> {fmtDate(f.fechaPago)}}</td>
                   <td style={{fontSize:'.76rem',color:'var(--muted)'}}> {f.oc||'—'}}</td>
-                  <td><SiiBadge sii={{f.sii}}/></td>
+                  <td><SiiBadge sii={f.sii}}/></td>
                   <td>
                     {esImpaga && (
-                      <button className="btn btn-success btn-sm" title="Marcar como pagada" onClick={{()=>onPagar(f)}}>
+                      <button className="btn btn-success btn-sm" title="Marcar como pagada" onClick={()=>onPagar(f)}}>
                         ✓ Pagar
                       </button>
                     )}}
@@ -433,14 +433,14 @@ function ClientesView({facturas}}) {
       <div className="table-wrap">
         <div className="table-header">
           <span className="table-title">{fil.length}} clientes</span>
-          <input className="search-bar" placeholder="🔍 Buscar nombre o RUT..." value={{search}} onChange={{e=>setSearch(e.target.value)}}/>
+          <input className="search-bar" placeholder="🔍 Buscar nombre o RUT..." value={search}} onChange={e=>setSearch(e.target.value)}}/>
         </div>
         <table>
           <thead><tr><th>Cliente</th><th>RUT</th><th>Facturas</th><th>Total Facturado</th><th>Pendiente</th><th>Recuperación</th></tr></thead>
           <tbody>{fil.map(c => {
             const pct = c.total > 0 ? Math.round(c.pagado/c.total*100) : 0;
             return (
-              <tr key={{c.rut}}>
+              <tr key={c.rut}}>
                 <td style={{fontWeight:600,color:'var(--navy)'}}> {c.razon}}</td>
                 <td style={{color:'var(--muted)',fontSize:'.78rem'}}> {c.rut}}</td>
                 <td><span style={{fontWeight:700,color:'var(--warn)'}}> {c.nImpagas}}</span><span style={{color:'var(--muted)',fontSize:'.78rem'}}> imp. / {c.nFacturas}}</span></td>
@@ -509,7 +509,7 @@ function App() {
           {id:'facturas',  icon:'🧾', label:'Facturas', badge: impagas.length > 0 ? impagas.length : null}},
           {id:'clientes',  icon:'🏢', label:'Clientes'}},
         ].map(n => (
-          <button key={{n.id}} className={{`nav-btn ${view===n.id?'active':''}}`}} onClick={{()=>setView(n.id)}}>
+          <button key={n.id}} className={`nav-btn ${view===n.id?'active':''}}`}} onClick={()=>setView(n.id)}}>
             <span className="nav-icon">{n.icon}}</span>
             {n.label}}
             {n.badge && <span className="nav-badge">{n.badge}}</span>}}
@@ -522,21 +522,21 @@ function App() {
       </nav>
 
       <main className="main">
-        {view === 'dashboard' && <Dashboard facturas={{facturas}} setView={{setView}}/>}}
-        {view === 'facturas'  && <FacturasView facturas={{facturas}} onPagar={{handlePagar}}/>}}
-        {view === 'clientes'  && <ClientesView facturas={{facturas}}/>}}
+        {view === 'dashboard' && <Dashboard facturas={facturas}} setView={setView}}/>}}
+        {view === 'facturas'  && <FacturasView facturas={facturas}} onPagar={handlePagar}}/>}}
+        {view === 'clientes'  && <ClientesView facturas={facturas}}/>}}
       </main>
 
       {modal && (
         <ModalPago
-          factura={{modal}}
-          onClose={{()=>setModal(null)}}
-          onConfirm={{handleConfirmarPago}}
-          saving={{saving}}
+          factura={modal}}
+          onClose={()=>setModal(null)}}
+          onConfirm={handleConfirmarPago}}
+          saving={saving}}
         />
       )}}
 
-      {toast && <Toast msg={{toast}} onDone={{()=>setToast(null)}}/>}}
+      {toast && <Toast msg={toast}} onDone={()=>setToast(null)}}/>}}
     </div>
   );
 }}
