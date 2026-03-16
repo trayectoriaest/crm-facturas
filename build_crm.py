@@ -687,7 +687,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </body>
 </html>"""
     html = html.replace('__FJ__', fj).replace('__TODAY__', today_str)
-    html = html.replace('{{', '{').replace('}}', '}')
     return html
 
 # ── MAIN ──────────────────────────────────────────────────────────────────────
