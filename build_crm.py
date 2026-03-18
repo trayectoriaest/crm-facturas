@@ -24,7 +24,10 @@ from openpyxl import load_workbook
 
 DRIVE_ID  = "b!94YSNWupIUmh41_AtdOVSPieLm_WNpBEh9tqCJhq7-HE4RJxxbTATpTpoCXdSMrL"
 BASE_PATH = "Administración y Finanzas/{year}/Contabilidad/Trayectoria EST/Facturación"
-FILES     = { 2026: "Facturación EST 2026.xlsx" }
+FILES     = {
+    2025: "Facturación EST 2025.xlsx",
+    2026: "Facturación EST 2026.xlsx",
+}
 
 COL_RAZON=0; COL_RUT=1; COL_FECHA=2; COL_NETO=3; COL_TOTAL=4
 COL_NFACT=5; COL_ESTADO=6; COL_PLAZO=7; COL_FPAGO=8; COL_OC=9; COL_SII=10
