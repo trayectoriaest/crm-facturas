@@ -23,7 +23,10 @@ from datetime import datetime, date
 from openpyxl import load_workbook
 
 DRIVE_ID  = "b!94YSNWupIUmh41_AtdOVSPieLm_WNpBEh9tqCJhq7-HE4RJxxbTATpTpoCXdSMrL"
-BASE_PATH = "Administración y Finanzas/{year}/Contabilidad/Trayectoria EST/Facturación"
+BASE_PATH = {
+    2025: "Administración y Finanzas/2025/Contabilidad EST/Facturación",
+    2026: "Administración y Finanzas/2026/Contabilidad/Trayectoria EST/Facturación",
+}
 FILES     = {
     2025: "Facturación EST 2025.xlsx",
     2026: "Facturación EST 2026.xlsx",
@@ -39,7 +42,7 @@ def get_token():
         return json.loads(r.read())["access_token"]
 
 def get_file_bytes(token, year, filename):
-    path = f"{BASE_PATH.format(year=year)}/{filename}"
+    path = f"{BASE_PATH[year]}/{filename}"
     url  = f"https://graph.microsoft.com/v1.0/drives/{DRIVE_ID}/root:/{urllib.parse.quote(path)}:/content"
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})) as r:
