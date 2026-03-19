@@ -50,10 +50,14 @@ function LogoIcon() {
   </svg>);
 }
 function Toast({msg, onDone}) {
-  React.useEffect(() => { const t=setTimeout(onDone,3000); return () => clearTimeout(t); }, []);
-  return <div className="toast">{msg}</div>;
+  React.useEffect(() => { const t=setTimeout(onDone,3500); return () => clearTimeout(t); }, []);
+  const ok = msg.startsWith('✅');
+  return <div className="toast" style={{background: ok ? 'var(--success)' : 'var(--danger)'}}>{msg}</div>;
 }
 function ModalPago({factura, onClose, onConfirm, saving}) {
+  const [fechaPago, setFechaPago] = useState(TODAY);
+  const [montoPagado, setMontoPagado] = useState(factura.total||0);
+  const handleConfirm = () => onConfirm({fechaPago, montoPagado: parseFloat(montoPagado)||0});
   return (
     <div className="overlay" onClick={e => e.target===e.currentTarget && onClose()}>
       <div className="modal">
@@ -61,15 +65,28 @@ function ModalPago({factura, onClose, onConfirm, saving}) {
         <div className="kv-grid">
           <div className="kv"><span className="kv-key">Cliente</span><span className="kv-val">{factura.razon}</span></div>
           <div className="kv"><span className="kv-key">N° Factura</span><span className="kv-val">{factura.nFactura}</span></div>
-          <div className="kv"><span className="kv-key">Total</span><span className="kv-val" style={{color:'var(--success)'}}>{fmtFull(factura.total)}</span></div>
-          <div className="kv"><span className="kv-key">Fecha</span><span className="kv-val">{fmtDate(factura.fecha)}</span></div>
+          <div className="kv"><span className="kv-key">Monto factura</span><span className="kv-val">{fmtFull(factura.total)}</span></div>
+          <div className="kv"><span className="kv-key">Fecha emisión</span><span className="kv-val">{fmtDate(factura.fecha)}</span></div>
         </div>
-        <p style={{fontSize:'.84rem',color:'var(--text-2)',lineHeight:1.6}}>
-          Al confirmar, se actualizará el estado a <strong>Pagada</strong> en SharePoint.
-        </p>
+        <div className="form-row">
+          <div className="form-group">
+            <label className="form-label">📅 Fecha de pago</label>
+            <input type="date" className="form-input" value={fechaPago} onChange={e => setFechaPago(e.target.value)} max={TODAY}/>
+          </div>
+          <div className="form-group">
+            <label className="form-label">💵 Monto pagado</label>
+            <div className="input-prefix-wrap">
+              <span className="input-prefix">$</span>
+              <input type="number" className="form-input with-prefix" value={montoPagado} onChange={e => setMontoPagado(e.target.value)} min="0" step="1"/>
+            </div>
+            {parseFloat(montoPagado) < factura.total && parseFloat(montoPagado) > 0 &&
+              <span className="form-hint warn">⚠️ Pago parcial: falta {fmtFull(factura.total - parseFloat(montoPagado))}</span>
+            }
+          </div>
+        </div>
         <div className="modal-actions">
           <button className="btn btn-ghost" onClick={onClose} disabled={saving}>Cancelar</button>
-          <button className="btn btn-success" onClick={onConfirm} disabled={saving}>
+          <button className="btn btn-success" onClick={handleConfirm} disabled={saving || !fechaPago || !montoPagado}>
             {saving ? '⏳ Guardando...' : '✓ Confirmar Pago'}
           </button>
         </div>
@@ -77,12 +94,64 @@ function ModalPago({factura, onClose, onConfirm, saving}) {
     </div>
   );
 }
-async function marcarPagadaAPI(factura) {
-  const r = await fetch('/api/pagar', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:factura.year,row:factura.row,nFactura:factura.nFactura})});
+function FichaCliente({cliente, facturas, onClose, onPagar}) {
+  const facs = facturas.filter(f => f.rut === cliente.rut);
+  const activas = facs.filter(f => eN(f.estado) !== 'anulada');
+  const pagadas = activas.filter(f => ['pagada','pagado'].includes(eN(f.estado)));
+  const impagas = activas.filter(f => !['pagada','pagado','anulada'].includes(eN(f.estado)));
+  const total = activas.reduce((s,f) => s+(f.total||0),0);
+  const pagado = pagadas.reduce((s,f) => s+(f.total||0),0);
+  const pendiente = impagas.reduce((s,f) => s+(f.total||0),0);
+  const pct = total > 0 ? Math.round(pagado/total*100) : 0;
+  return (
+    <div className="overlay" onClick={e => e.target===e.currentTarget && onClose()}>
+      <div className="modal modal-lg">
+        <div className="ficha-header">
+          <div>
+            <p className="modal-title" style={{marginBottom:4}}>🏢 {cliente.razon}</p>
+            <p style={{fontSize:'.8rem',color:'var(--muted)'}}>RUT: {cliente.rut} · {facs.length} facturas en total</p>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={onClose}>✕ Cerrar</button>
+        </div>
+        <div className="ficha-stats">
+          <div className="ficha-stat"><span className="ficha-stat-val">{fmtM(total)}</span><span className="ficha-stat-lbl">Total facturado</span></div>
+          <div className="ficha-stat"><span className="ficha-stat-val" style={{color:'var(--success)'}}>{fmtM(pagado)}</span><span className="ficha-stat-lbl">Pagado</span></div>
+          <div className="ficha-stat"><span className="ficha-stat-val" style={{color:'var(--danger)'}}>{fmtM(pendiente)}</span><span className="ficha-stat-lbl">Pendiente</span></div>
+          <div className="ficha-stat">
+            <span className="ficha-stat-val">{pct}%</span><span className="ficha-stat-lbl">Recuperación</span>
+            <div className="progress-bar" style={{marginTop:4}}><div className="progress-fill" style={{width:pct+'%'}}/></div>
+          </div>
+        </div>
+        <div style={{overflowX:'auto'}}>
+          <table><thead><tr><th>Año</th><th>N° Factura</th><th>Fecha</th><th>Neto</th><th>Total c/IVA</th><th>Estado</th><th>F. Pago</th><th>OC</th><th></th></tr></thead>
+          <tbody>{facs.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).map(f => {
+            const esI = !['pagada','pagado','anulada'].includes(eN(f.estado));
+            const venc = esI && diasAtraso(f.fecha) > (parseInt(f.plazo)||30);
+            return (
+              <tr key={f.nFactura+'-'+f.row+'-'+f.year} style={{background:venc?'#fff8f8':esI?'#fffdf5':''}}>
+                <td style={{fontWeight:600,color:'var(--muted)',fontSize:'.78rem'}}>{f.year}</td>
+                <td style={{fontWeight:700,color:'var(--navy)'}}>{f.nFactura}</td>
+                <td style={{fontSize:'.78rem'}}>{fmtDate(f.fecha)}</td>
+                <td style={{fontSize:'.82rem'}}>{fmtFull(f.neto)}</td>
+                <td style={{fontWeight:700,color:venc?'var(--danger)':esI?'var(--warn)':'var(--success)'}}>{fmtFull(f.total)}</td>
+                <td><EstadoBadge estado={f.estado}/></td>
+                <td style={{fontSize:'.78rem'}}>{fmtDate(f.fechaPago)}</td>
+                <td style={{fontSize:'.76rem',color:'var(--muted)'}}>{f.oc||'—'}</td>
+                <td>{esI && <button className="btn btn-success btn-sm" onClick={() => { onClose(); onPagar(f); }}>✓ Pagar</button>}</td>
+              </tr>
+            );
+          })}</tbody></table>
+        </div>
+      </div>
+    </div>
+  );
+}
+async function marcarPagadaAPI(factura, fechaPago, montoPagado) {
+  const r = await fetch('/api/pagar', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:factura.year,row:factura.row,nFactura:factura.nFactura,fechaPago,montoPagado})});
   if(!r.ok) throw new Error(await r.text());
   return r.json();
 }
-function Dashboard({facturas, setView}) {
+function Dashboard({facturas, setView, onPagar}) {
   const activas=facturas.filter(f=>eN(f.estado)!=='anulada');
   const pagadas=activas.filter(f=>['pagada','pagado'].includes(eN(f.estado)));
   const impagas=activas.filter(f=>!['pagada','pagado','anulada'].includes(eN(f.estado)));
@@ -96,20 +165,18 @@ function Dashboard({facturas, setView}) {
   const top5=Object.values(porCliente).sort((a,b)=>b.pendiente-a.pendiente).slice(0,5);
   return (<>
     <div className="page-header"><p className="page-title">Dashboard</p><p className="page-sub">Trayectoria EST · {activas.length} facturas · Actualizado __TODAY__</p></div>
-    <div className="stats-grid">
-      {[{label:'Total Facturado',val:fmtM(totalF),sub:fmtFull(totalF),icon:'📋',bg:'#eef4fd'},{label:'Por Cobrar',val:fmtM(totalPend),sub:fmtFull(totalPend),icon:'⏳',bg:'#fff7ed'},{label:'Recuperado',val:fmtM(totalP),sub:recup+'% del total',icon:'✅',bg:'#edfaf4'},{label:'Vencidas',val:vencidas.length,sub:fmtM(vencidas.reduce((s,f)=>s+(f.total||0),0))+' en riesgo',icon:'⚠️',bg:'#fff0f0'}].map(c=>(
-        <div key={c.label} className="stat-card"><div className="stat-card-top"><div className="stat-label">{c.label}</div><div className="stat-icon" style={{background:c.bg}}>{c.icon}</div></div><div className="stat-val">{c.val}</div><div className="stat-sub">{c.sub}</div></div>
-      ))}
-    </div>
+    <div className="stats-grid">{[{label:'Total Facturado',val:fmtM(totalF),sub:fmtFull(totalF),icon:'📋',bg:'#eef4fd'},{label:'Por Cobrar',val:fmtM(totalPend),sub:fmtFull(totalPend),icon:'⏳',bg:'#fff7ed'},{label:'Recuperado',val:fmtM(totalP),sub:recup+'% del total',icon:'✅',bg:'#edfaf4'},{label:'Vencidas',val:vencidas.length,sub:fmtM(vencidas.reduce((s,f)=>s+(f.total||0),0))+' en riesgo',icon:'⚠️',bg:'#fff0f0'}].map(c=>(
+      <div key={c.label} className="stat-card"><div className="stat-card-top"><div className="stat-label">{c.label}</div><div className="stat-icon" style={{background:c.bg}}>{c.icon}</div></div><div className="stat-val">{c.val}</div><div className="stat-sub">{c.sub}</div></div>
+    ))}</div>
     <div className="two-col">
       <div className="table-wrap"><div className="table-header"><span className="table-title">Top 5 — Pendiente</span></div>
         <table><thead><tr><th>#</th><th>Cliente</th><th>Pendiente</th><th>Impagas</th></tr></thead>
         <tbody>{top5.map((c,i)=>(<tr key={c.razon}><td style={{fontWeight:700,color:'var(--muted)'}}>{i+1}</td><td><div style={{fontWeight:600,color:'var(--navy)'}}>{c.razon}</div><div style={{fontSize:'.74rem',color:'var(--muted)'}}>{c.rut}</div></td><td style={{fontWeight:700,color:'var(--danger)'}}>{fmtM(c.pendiente)}</td><td><span style={{fontWeight:700,color:'var(--warn)'}}>{c.nImpagas}</span></td></tr>))}</tbody>
       </table></div>
       <div className="table-wrap"><div className="table-header"><span className="table-title">Vencidas Recientes</span><button className="btn btn-ghost btn-sm" onClick={()=>setView('facturas')}>Ver todas →</button></div>
-        <table><thead><tr><th>N° Factura</th><th>Cliente</th><th>Total</th><th>Atraso</th></tr></thead>
-        <tbody>{vencidas.slice(0,6).map(f=>(<tr key={f.nFactura+f.row}><td style={{fontWeight:700}}>{f.nFactura}</td><td style={{fontSize:'.8rem'}}>{f.razon}</td><td style={{fontWeight:700,color:'var(--danger)'}}>{fmtM(f.total)}</td><td><AtrasoChip fecha={f.fecha} estado={f.estado}/></td></tr>))}
-        {vencidas.length===0&&<tr><td colSpan="4"><div className="empty-state" style={{padding:20}}>Sin vencidas 🎉</div></td></tr>}</tbody>
+        <table><thead><tr><th>N° Factura</th><th>Cliente</th><th>Total</th><th>Atraso</th><th></th></tr></thead>
+        <tbody>{vencidas.slice(0,6).map(f=>(<tr key={f.nFactura+f.row}><td style={{fontWeight:700}}>{f.nFactura}</td><td style={{fontSize:'.8rem'}}>{f.razon}</td><td style={{fontWeight:700,color:'var(--danger)'}}>{fmtM(f.total)}</td><td><AtrasoChip fecha={f.fecha} estado={f.estado}/></td><td><button className="btn btn-success btn-sm" onClick={()=>onPagar(f)}>✓ Pagar</button></td></tr>))}
+        {vencidas.length===0&&<tr><td colSpan="5"><div className="empty-state" style={{padding:20}}>Sin vencidas 🎉</div></td></tr>}</tbody>
       </table></div>
     </div>
   </>);
@@ -133,54 +200,31 @@ function FacturasView({facturas, onPagar}) {
   const cnt={todas:facturas.length,impaga:facturas.filter(f=>!['pagada','pagado','anulada'].includes(eN(f.estado))).length,pagada:facturas.filter(f=>['pagada','pagado'].includes(eN(f.estado))).length,vencida:facturas.filter(f=>!['pagada','pagado','anulada'].includes(eN(f.estado))&&diasAtraso(f.fecha)>(parseInt(f.plazo)||30)).length,anulada:facturas.filter(f=>eN(f.estado)==='anulada').length};
   return (<>
     <div className="page-header"><p className="page-title">Facturas</p><p className="page-sub">Todas las facturas desde SharePoint</p></div>
-    <div className="filter-bar">
-      {['todas','impaga','pagada','vencida','anulada'].map(e=>(<button key={e} className={`btn btn-sm ${efE===e?'btn-primary':'btn-ghost'}`} onClick={()=>setEfE(e)}>{e.charAt(0).toUpperCase()+e.slice(1)} ({cnt[e]||0})</button>))}
+    <div className="filter-bar">{['todas','impaga','pagada','vencida','anulada'].map(e=>(<button key={e} className={`btn btn-sm ${efE===e?'btn-primary':'btn-ghost'}`} onClick={()=>setEfE(e)}>{e.charAt(0).toUpperCase()+e.slice(1)} ({cnt[e]||0})</button>))}
       <select className="select-bar" value={efY} onChange={e=>setEfY(e.target.value)}><option value="todos">Todos los años</option>{years.map(y=><option key={y} value={y}>{y}</option>)}</select>
     </div>
     <div className="table-wrap">
       <div className="table-header"><span className="table-title">{fil.length} facturas</span><input className="search-bar" placeholder="🔍 Buscar..." value={search} onChange={e=>setSearch(e.target.value)}/></div>
-      <table><thead><tr><th>N° Factura</th><th>Cliente</th><th>RUT</th><th>Fecha</th><th>Neto</th><th>Total c/IVA</th><th>Estado</th><th>Plazo</th><th>F. Pago</th><th>OC</th><th>SII</th><th></th></tr></thead>
-      <tbody>{fil.map(f=>{
-        const esI=!['pagada','pagado','anulada'].includes(eN(f.estado));
-        const venc=esI&&diasAtraso(f.fecha)>(parseInt(f.plazo)||30);
-        return(<tr key={f.nFactura+'-'+f.row+'-'+f.year} style={{background:venc?'#fff8f8':esI?'#fffdf5':''}}>
-          <td style={{fontWeight:700,color:'var(--navy)'}}>{f.nFactura}</td>
-          <td><div style={{fontWeight:600,fontSize:'.82rem'}}>{f.razon}</div></td>
-          <td style={{color:'var(--muted)',fontSize:'.78rem'}}>{f.rut}</td>
-          <td style={{fontSize:'.78rem',color:'var(--text-2)'}}>{fmtDate(f.fecha)}</td>
-          <td style={{fontSize:'.82rem'}}>{fmtFull(f.neto)}</td>
-          <td style={{fontWeight:700,color:venc?'var(--danger)':esI?'var(--warn)':'var(--success)'}}>{fmtFull(f.total)}</td>
-          <td><EstadoBadge estado={f.estado}/></td>
-          <td style={{fontSize:'.78rem',color:'var(--muted)'}}>{f.plazo?f.plazo+' días':'—'}</td>
-          <td style={{fontSize:'.78rem'}}>{fmtDate(f.fechaPago)}</td>
-          <td style={{fontSize:'.76rem',color:'var(--muted)'}}>{f.oc||'—'}</td>
-          <td><SiiBadge sii={f.sii}/></td>
-          <td>{esI&&(<button className="btn btn-success btn-sm" onClick={()=>onPagar(f)}>✓ Pagar</button>)}</td>
-        </tr>);
-      })}{fil.length===0&&<tr><td colSpan="12"><div className="empty-state">Sin facturas.</div></td></tr>}</tbody>
-      </table>
+      <table><thead><tr><th>Año</th><th>N° Factura</th><th>Cliente</th><th>RUT</th><th>Fecha</th><th>Neto</th><th>Total c/IVA</th><th>Estado</th><th>Plazo</th><th>F. Pago</th><th>OC</th><th>SII</th><th></th></tr></thead>
+      <tbody>{fil.map(f=>{const esI=!['pagada','pagado','anulada'].includes(eN(f.estado));const venc=esI&&diasAtraso(f.fecha)>(parseInt(f.plazo)||30);return(<tr key={f.nFactura+'-'+f.row+'-'+f.year} style={{background:venc?'#fff8f8':esI?'#fffdf5':''}}><td style={{fontWeight:600,color:'var(--muted)',fontSize:'.78rem'}}>{f.year}</td><td style={{fontWeight:700,color:'var(--navy)'}}>{f.nFactura}</td><td><div style={{fontWeight:600,fontSize:'.82rem'}}>{f.razon}</div></td><td style={{color:'var(--muted)',fontSize:'.78rem'}}>{f.rut}</td><td style={{fontSize:'.78rem',color:'var(--text-2)'}}>{fmtDate(f.fecha)}</td><td style={{fontSize:'.82rem'}}>{fmtFull(f.neto)}</td><td style={{fontWeight:700,color:venc?'var(--danger)':esI?'var(--warn)':'var(--success)'}}>{fmtFull(f.total)}</td><td><EstadoBadge estado={f.estado}/></td><td style={{fontSize:'.78rem',color:'var(--muted)'}}>{f.plazo?f.plazo+' días':'—'}</td><td style={{fontSize:'.78rem'}}>{fmtDate(f.fechaPago)}</td><td style={{fontSize:'.76rem',color:'var(--muted)'}}>{f.oc||'—'}</td><td><SiiBadge sii={f.sii}/></td><td>{esI&&<button className="btn btn-success btn-sm" onClick={()=>onPagar(f)}>✓ Pagar</button>}</td></tr>);})
+      }{fil.length===0&&<tr><td colSpan="13"><div className="empty-state">Sin facturas.</div></td></tr>}</tbody></table>
     </div>
   </>);
 }
-function ClientesView({facturas}) {
+function ClientesView({facturas, onPagar}) {
   const [search,setSearch]=useState('');
+  const [fichaCliente,setFichaCliente]=useState(null);
   const clientes=useMemo(()=>{const map={};facturas.filter(f=>eN(f.estado)!=='anulada').forEach(f=>{if(!map[f.rut])map[f.rut]={razon:f.razon,rut:f.rut,total:0,pendiente:0,pagado:0,nFacturas:0,nImpagas:0};map[f.rut].nFacturas++;map[f.rut].total+=f.total||0;if(['pagada','pagado'].includes(eN(f.estado)))map[f.rut].pagado+=f.total||0;else{map[f.rut].pendiente+=f.total||0;map[f.rut].nImpagas++;}});return Object.values(map).sort((a,b)=>b.pendiente-a.pendiente);},[facturas]);
   const fil=clientes.filter(c=>c.razon.toLowerCase().includes(search.toLowerCase())||c.rut.includes(search));
   return (<>
     <div className="page-header"><p className="page-title">Clientes</p><p className="page-sub">{clientes.length} clientes activos</p></div>
     <div className="table-wrap">
       <div className="table-header"><span className="table-title">{fil.length} clientes</span><input className="search-bar" placeholder="🔍 Buscar..." value={search} onChange={e=>setSearch(e.target.value)}/></div>
-      <table><thead><tr><th>Cliente</th><th>RUT</th><th>Facturas</th><th>Total</th><th>Pendiente</th><th>Recuperación</th></tr></thead>
-      <tbody>{fil.map(c=>{const pct=c.total>0?Math.round(c.pagado/c.total*100):0;return(<tr key={c.rut}>
-        <td style={{fontWeight:600,color:'var(--navy)'}}>{c.razon}</td>
-        <td style={{color:'var(--muted)',fontSize:'.78rem'}}>{c.rut}</td>
-        <td><span style={{fontWeight:700,color:'var(--warn)'}}>{c.nImpagas}</span><span style={{color:'var(--muted)',fontSize:'.78rem'}}> imp./{c.nFacturas}</span></td>
-        <td style={{fontSize:'.82rem'}}>{fmtM(c.total)}</td>
-        <td style={{fontWeight:700,color:'var(--danger)'}}>{fmtM(c.pendiente)}</td>
-        <td style={{width:130}}><div style={{display:'flex',justifyContent:'space-between',fontSize:'.72rem',color:'var(--muted)',marginBottom:3}}><span>{pct}%</span></div><div className="progress-bar"><div className="progress-fill" style={{width:pct+'%'}}/></div></td>
-      </tr>);})}
-      </tbody></table>
+      <table><thead><tr><th>Cliente</th><th>RUT</th><th>Facturas</th><th>Total</th><th>Pendiente</th><th>Recuperación</th><th></th></tr></thead>
+      <tbody>{fil.map(c=>{const pct=c.total>0?Math.round(c.pagado/c.total*100):0;return(<tr key={c.rut} style={{cursor:'pointer'}} onClick={()=>setFichaCliente(c)}><td style={{fontWeight:600,color:'var(--navy)'}}>{c.razon}</td><td style={{color:'var(--muted)',fontSize:'.78rem'}}>{c.rut}</td><td><span style={{fontWeight:700,color:'var(--warn)'}}>{c.nImpagas}</span><span style={{color:'var(--muted)',fontSize:'.78rem'}}> imp./{c.nFacturas}</span></td><td style={{fontSize:'.82rem'}}>{fmtM(c.total)}</td><td style={{fontWeight:700,color:'var(--danger)'}}>{fmtM(c.pendiente)}</td><td style={{width:130}}><div style={{display:'flex',justifyContent:'space-between',fontSize:'.72rem',color:'var(--muted)',marginBottom:3}}><span>{pct}%</span></div><div className="progress-bar"><div className="progress-fill" style={{width:pct+'%'}}/></div></td><td><button className="btn btn-ghost btn-sm" onClick={e=>{e.stopPropagation();setFichaCliente(c);}}>Ver ficha →</button></td></tr>);})
+      }</tbody></table>
     </div>
+    {fichaCliente && <FichaCliente cliente={fichaCliente} facturas={facturas} onClose={()=>setFichaCliente(null)} onPagar={f=>{setFichaCliente(null);onPagar(f);}}/> }
   </>);
 }
 function App() {
@@ -190,11 +234,15 @@ function App() {
   const [saving,setSaving]=useState(false);
   const [toast,setToast]=useState(null);
   const impagas=facturas.filter(f=>!['pagada','pagado','anulada'].includes(eN(f.estado)));
-  const handleConfirmar=async()=>{
+  const handleConfirmar = async ({fechaPago, montoPagado}) => {
     setSaving(true);
-    try{await marcarPagadaAPI(modal);setFacturas(prev=>prev.map(f=>f.row===modal.row&&f.year===modal.year?{...f,estado:'Pagada',fechaPago:TODAY}:f));setToast('✅ Factura '+modal.nFactura+' pagada');setModal(null);}
-    catch(err){setToast('❌ Error: '+err.message);}
-    finally{setSaving(false);}
+    try {
+      await marcarPagadaAPI(modal, fechaPago, montoPagado);
+      setFacturas(prev=>prev.map(f=>f.row===modal.row&&f.year===modal.year?{...f,estado:'Pagada',fechaPago}:f));
+      setToast('✅ Factura '+modal.nFactura+' pagada');
+      setModal(null);
+    } catch(err) { setToast('❌ Error: '+err.message); }
+    finally { setSaving(false); }
   };
   return (
     <div className="crm-root">
@@ -209,9 +257,9 @@ function App() {
         <div className="sync-info">🔄 Sincronizado desde SharePoint<br/>Actualizado __TODAY__ a las 08:00</div>
       </nav>
       <main className="main">
-        {view==='dashboard'&&<Dashboard facturas={facturas} setView={setView}/>}
+        {view==='dashboard'&&<Dashboard facturas={facturas} setView={setView} onPagar={setModal}/>}
         {view==='facturas'&&<FacturasView facturas={facturas} onPagar={setModal}/>}
-        {view==='clientes'&&<ClientesView facturas={facturas}/>}
+        {view==='clientes'&&<ClientesView facturas={facturas} onPagar={setModal}/>}
       </main>
       {modal&&<ModalPago factura={modal} onClose={()=>setModal(null)} onConfirm={handleConfirmar} saving={saving}/>}
       {toast&&<Toast msg={toast} onDone={()=>setToast(null)}/>}
