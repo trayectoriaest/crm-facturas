@@ -78,7 +78,7 @@ def build_html(facturas):
         jsx = f.read()
 
     # Prepare JSX for compilation (placeholder data)
-    jsx_compile = jsx.replace('__FJ__', '[]').replace('__TODAY__', '"TODAYPH"')
+    jsx_compile = jsx.replace('__FJ__', '[]').replace('__TODAY__', f'"{today_str}"')
     tmp_jsx = '/tmp/_crm_build.jsx'
     tmp_js  = '/tmp/_babel_run.js'
     with open(tmp_jsx, 'w', encoding='utf-8') as f:
@@ -103,8 +103,7 @@ process.stdout.write(result.code);
 
     compiled_js = result.stdout
     compiled_js = compiled_js.replace('const FACTURAS_RAW = [];', f'const FACTURAS_RAW = {fj};', 1)
-    compiled_js = compiled_js.replace('"TODAYPH"', f'"{today_str}"')
-
+    
     css = """*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--bg:#f0f4fa;--card:#fff;--border:#dde4f0;--border-lt:#eef2f9;--navy:#1e2d6e;--blue:#3a6fd8;--blue-lt:#5fb3f0;--accent:#3a6fd8;--accent-hv:#2d5bbf;--accent-bg:#eef4fd;--danger:#d93b3b;--danger-bg:#fff0f0;--success:#1a9e6a;--success-bg:#edfaf4;--warn:#d97b10;--warn-bg:#fff7ed;--text:#1a2340;--text-2:#3d4f72;--muted:#7d90b5;--radius:10px;--shadow:0 1px 4px rgba(30,45,110,.08);--shadow-md:0 4px 16px rgba(30,45,110,.10)}
     body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
@@ -164,7 +163,22 @@ process.stdout.write(result.code);
     .kv-key{font-size:.69rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
     .kv-val{font-size:.88rem;font-weight:600;color:var(--navy)}
     .toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-size:.84rem;font-weight:600;z-index:999;display:flex;align-items:center;gap:8px}
-    .atraso-chip{display:inline-block;padding:2px 9px;border-radius:6px;font-size:.7rem;font-weight:600}"""
+    .atraso-chip{display:inline-block;padding:2px 9px;border-radius:6px;font-size:.7rem;font-weight:600}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-label{font-size:.75rem;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px}
+    .form-input{background:#f5f7fd;border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:.88rem;outline:none;width:100%}
+    .form-input:focus{border-color:var(--blue);background:#fff}
+    .input-prefix-wrap{position:relative;display:flex;align-items:center}
+    .input-prefix{position:absolute;left:12px;color:var(--muted);font-weight:600;font-size:.88rem}
+    .form-input.with-prefix{padding-left:24px}
+    .form-hint{font-size:.72rem;margin-top:4px}.form-hint.warn{color:var(--warn)}
+    .modal-lg{width:860px;max-width:96vw}
+    .ficha-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+    .ficha-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;padding:16px;background:#f7f9fd;border-radius:10px}
+    .ficha-stat{display:flex;flex-direction:column;gap:3px}
+    .ficha-stat-val{font-size:1.1rem;font-weight:700;color:var(--navy)}
+    .ficha-stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}"""
 
     return f"""<!DOCTYPE html>
 <html lang="es">
